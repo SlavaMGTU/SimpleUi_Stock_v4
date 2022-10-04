@@ -22,6 +22,43 @@ class Record(db.Entity):#new
     name = Required(str)
     qty = Required(int)
 
+class Tag(db.Entity):
+    id = PrimaryKey(int, auto=True)
+    tag_name = Optional(str)
+    products = Set('Product')
+
+
+class Product(db.Entity):
+    id = PrimaryKey(int, auto=True)
+    Partnumber = Optional(str)
+    Measure = Optional(str)
+    tags = Set(Tag)
+    list_products = Set('List_product')
+    incomes = Set('Income')
+    buys = Set('Buy')
+
+
+class List_product(db.Entity):
+    id = PrimaryKey(int, auto=True)
+    qty_buy = Required(int, default=0)
+    qty_income = Required(int, default=0)
+    products = Set(Product)
+
+
+class Income(db.Entity):
+    id = PrimaryKey(int, auto=True)
+    qty_income = Optional(int, default=0)
+    products = Set(Product)
+
+
+class Buy(db.Entity):
+    id = PrimaryKey(int, auto=True)
+    qty_buy = Optional(int, default=0)
+    products = Set(Product)
+
+
+
+
 app = Flask(__name__)
 
 
