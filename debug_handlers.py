@@ -1,4 +1,4 @@
-from pony.orm.core import db_session
+from pony.orm.core import db_session, PrimaryKey, Optional
 from pony import orm
 from pony.orm import Database,Required,Set,select,commit
 from flask import Flask
@@ -144,6 +144,33 @@ def _input_qty(hashMap, _files=None, _data=None):
 
     return hashMap
 
+
+# def _listbuy_on_start(hashMap, _files=None, _data=None):
+#     table = {
+#         'type': 'table',
+#         'textsize': '20',
+#
+#         'columns': [
+#             {
+#                 'name': 'id',
+#                 'header': 'Список закупок',
+#                 'weight': '2'
+#             },
+#         ]
+#     }
+#     # work with SQL via Pony ORM
+#     rows = []
+#     with db_session:#new
+#         query = select(c for c in Buy)# ЗАКЛАДКА!!!!https://stackoverflow.com/questions/16115713/how-pony-orm-does-its-tricks
+#     #query = select(c for c in ui_global.Record)#https://stackoverflow.com/questions/16115713/how-pony-orm-does-its-tricks
+#
+#         for record in query:
+#             rows.append({'name': record.name})
+#
+#     table['rows'] = rows
+#     hashMap.put('tab_scan', json.dumps(table))
+#
+#     return hashMap
 
 # -END CUSTOM HANDLERS
 

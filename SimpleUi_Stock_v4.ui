@@ -7,7 +7,7 @@
             {
                 "type": "Process",
                 "ProcessName": "aPluSb",
-                "PlanFactHeader": "План-факт",
+                "PlanFactHeader": "ИзмНазвПлФакт",
                 "DefineOnBackPressed": false,
                 "hidden": false,
                 "login_screen": false,
@@ -3701,7 +3701,22 @@
             {
                 "ProcessName": "Закупки",
                 "type": "Process",
-                "Operations": [],
+                "Operations": [
+                    {
+                        "Name": "Новый экран",
+                        "type": "Operation",
+                        "Elements": [],
+                        "Timer": false,
+                        "hideToolBarScreen": false,
+                        "noScroll": false,
+                        "handleKeyUp": false,
+                        "hideBottomBarScreen": false,
+                        "onlineOnStart": false,
+                        "onlineOnInput": false,
+                        "DefOnCreate": "_listbuy_on_start",
+                        "DefOnInput": "_listbuy_on_input"
+                    }
+                ],
                 "PlanFactHeader": "ИзмНазвПлФакт"
             },
             {
