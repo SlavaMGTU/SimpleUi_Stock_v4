@@ -5,7 +5,6 @@ from flask import Flask
 from flask import request
 import json
 
-
 from pony.orm import select, db_session, commit
 
 #import ui_global
@@ -21,6 +20,9 @@ class Record(db.Entity):#new
     barcode = Required(str)
     name = Required(str)
     qty = Required(int)
+
+
+
 
 class Tag(db.Entity):
     id = PrimaryKey(int, auto=True)
@@ -49,13 +51,24 @@ class Income(db.Entity):
     id = PrimaryKey(int, auto=True)
     qty_income = Optional(int, default=0)
     products = Set(Product)
+    list_incomes = Set('List_income')
 
 
 class Buy(db.Entity):
     id = PrimaryKey(int, auto=True)
     qty_buy = Optional(int, default=0)
     products = Set(Product)
+    list_buys = Set('List_buy')
 
+
+class List_buy(db.Entity):
+    id = PrimaryKey(int, auto=True)
+    buys = Set(Buy)
+
+
+class List_income(db.Entity):
+    id = PrimaryKey(int, auto=True)
+    incomes = Set(Income)
 
 
 
@@ -145,32 +158,42 @@ def _input_qty(hashMap, _files=None, _data=None):
     return hashMap
 
 
-# def _listbuy_on_start(hashMap, _files=None, _data=None):
-#     table = {
-#         'type': 'table',
-#         'textsize': '20',
-#
-#         'columns': [
-#             {
-#                 'name': 'id',
-#                 'header': 'Список закупок',
-#                 'weight': '2'
-#             },
-#         ]
-#     }
-#     # work with SQL via Pony ORM
-#     rows = []
-#     with db_session:#new
-#         query = select(c for c in Buy)# ЗАКЛАДКА!!!!https://stackoverflow.com/questions/16115713/how-pony-orm-does-its-tricks
-#     #query = select(c for c in ui_global.Record)#https://stackoverflow.com/questions/16115713/how-pony-orm-does-its-tricks
-#
-#         for record in query:
-#             rows.append({'name': record.name})
-#
-#     table['rows'] = rows
-#     hashMap.put('tab_scan', json.dumps(table))
-#
-#     return hashMap
+def _listproduct_on_start(hashMap, _files=None, _data=None):
+    table = {
+        'type': 'table',
+        'textsize': '20',
+
+        'columns': [
+            {
+                'name': 'id_product',
+                'header': 'ID',
+                'weight': '1'
+            },
+            {
+                'name': 'name_product',
+                'header': 'Name',
+                'weight': '2'
+            },
+        ]
+    }
+    rows = []
+    with db_session:#new
+        query = select(c for c in Product)
+        for product in query:
+            rows.append({'id_product': product.id_product, 'name': product.name_product})
+
+    table['rows'] = rows
+    hashMap.put('tab_product', json.dumps(table))
+
+    return hashMap
+
+def _listproduct_on_input(hashMap, _files=None, _data=None):
+
+    if hashMap.get('listener') == 'btn_newproduct':
+        hashMap.put('ShowScreen', 'Input-qty')
+
+    return hashMap
+
 
 # -END CUSTOM HANDLERS
 
