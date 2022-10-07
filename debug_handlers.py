@@ -190,7 +190,19 @@ def _listproduct_on_start(hashMap, _files=None, _data=None):
 def _listproduct_on_input(hashMap, _files=None, _data=None):
 
     if hashMap.get('listener') == 'btn_newproduct':
-        hashMap.put('ShowScreen', 'Input-qty')
+        hashMap.put('ShowScreen', 'New-product')
+
+    return hashMap
+
+
+def _newproduct_on_start(hashMap, _files=None, _data=None):
+
+
+    return hashMap
+
+
+def _newproduct_on_input(hashMap, _files=None, _data=None):
+
 
     return hashMap
 
