@@ -165,12 +165,12 @@ def _listproduct_on_start(hashMap, _files=None, _data=None):
 
         'columns': [
             {
-                'name': 'id_product',
+                'name': 'id',
                 'header': 'ID',
                 'weight': '1'
             },
             {
-                'name': 'name_product',
+                'name': 'name',
                 'header': 'Name',
                 'weight': '2'
             },
@@ -180,7 +180,7 @@ def _listproduct_on_start(hashMap, _files=None, _data=None):
     with db_session:#new
         query = select(c for c in Product)
         for product in query:
-            rows.append({'id_product': product.id_product, 'name': product.name_product})
+            rows.append({'id': product.id, 'name': product.Partnumber})
 
     table['rows'] = rows
     hashMap.put('tab_product', json.dumps(table))
@@ -197,12 +197,20 @@ def _listproduct_on_input(hashMap, _files=None, _data=None):
 
 def _newproduct_on_start(hashMap, _files=None, _data=None):
 
-
+    str_measure = 'kg;pcs;m;m3' # не получается сделать всплывающий список
+    hashMap.put('str_measure', 'kg')
     return hashMap
 
 
 def _newproduct_on_input(hashMap, _files=None, _data=None):
 
+    if hashMap.get('listener') == 'btn_save_newproduct':
+        with db_session:
+            #p = ui_global.Record(barcode=hashMap.get('barcode'), name=hashMap.get('nom'), qty=int(hashMap.get('qty')))
+            p = Product(Partnumber=hashMap.get('name_product'), Measure=hashMap.get('str_measure'))
+            commit()
+            hashMap.put('ShowScreen', 'List-product')
+            hashMap.put('toast', 'Добавлен товар')
 
     return hashMap
 

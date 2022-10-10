@@ -3619,7 +3619,8 @@
                         "onlineOnInput": false,
                         "DefOnInput": "_barcode_on_input",
                         "DefOnCreate": "_barcode_on_start",
-                        "DefOnlineOnCreate": ""
+                        "DefOnlineOnCreate": "",
+                        "noConfirmation": false
                     },
                     {
                         "Name": "Input-qty",
@@ -3730,11 +3731,11 @@
                 "Operations": []
             },
             {
-                "ProcessName": "Товары",
+                "ProcessName": "Products",
                 "type": "Process",
                 "Operations": [
                     {
-                        "Name": "Список товаров",
+                        "Name": "List-product",
                         "type": "Operation",
                         "Elements": [
                             {
@@ -3748,8 +3749,8 @@
                                 "Elements": [
                                     {
                                         "type": "TextView",
-                                        "height": "wrap_content",
-                                        "width": "wrap_content",
+                                        "height": "match_parent",
+                                        "width": "match_parent",
                                         "weight": "0",
                                         "Value": "Список товаров",
                                         "Variable": ""
@@ -3764,17 +3765,17 @@
                                     },
                                     {
                                         "type": "TextView",
-                                        "height": "wrap_content",
-                                        "width": "wrap_content",
-                                        "weight": 0,
+                                        "height": "match_parent",
+                                        "width": "match_parent",
+                                        "weight": "0",
                                         "Value": "",
                                         "Variable": ""
                                     },
                                     {
-                                        "type": "TextView",
-                                        "height": "wrap_content",
-                                        "width": "wrap_content",
-                                        "weight": 0,
+                                        "type": "Button",
+                                        "height": "match_parent",
+                                        "width": "match_parent",
+                                        "weight": "0",
                                         "Value": "New",
                                         "Variable": "btn_newproduct"
                                     }
@@ -3789,7 +3790,8 @@
                         "onlineOnStart": false,
                         "onlineOnInput": false,
                         "DefOnCreate": "_listproduct_on_start",
-                        "DefOnInput": "_listproduct_on_input"
+                        "DefOnInput": "_listproduct_on_input",
+                        "noConfirmation": false
                     },
                     {
                         "Name": "New-product",
@@ -3800,14 +3802,14 @@
                                 "Variable": "",
                                 "type": "LinearLayout",
                                 "weight": "0",
-                                "height": "wrap_content",
-                                "width": "wrap_content",
+                                "height": "match_parent",
+                                "width": "match_parent",
                                 "orientation": "vertical",
                                 "Elements": [
                                     {
                                         "type": "TextView",
-                                        "height": "wrap_content",
-                                        "width": "wrap_content",
+                                        "height": "match_parent",
+                                        "width": "match_parent",
                                         "weight": "0",
                                         "Value": "New Product",
                                         "Variable": ""
@@ -3818,23 +3820,42 @@
                                         "width": "match_parent",
                                         "weight": "0",
                                         "Value": "@name_product",
-                                        "Variable": "name_product"
+                                        "Variable": "name_product",
+                                        "gravity_horizontal": "center"
+                                    },
+                                    {
+                                        "type": "EditTextText",
+                                        "height": "wrap_content",
+                                        "width": "wrap_content",
+                                        "weight": "0",
+                                        "Value": "@partnumber_product",
+                                        "Variable": "partnumber_product"
                                     },
                                     {
                                         "type": "SpinnerLayout",
                                         "height": "match_parent",
                                         "width": "match_parent",
                                         "weight": "0",
-                                        "Value": "",
-                                        "Variable": "<>; kg; pcs; m; m3"
+                                        "Value": "@str_measure",
+                                        "Variable": "str_measure",
+                                        "gravity_horizontal": "center"
                                     },
                                     {
                                         "type": "Button",
-                                        "height": "wrap_content",
-                                        "width": "wrap_content",
+                                        "height": "match_parent",
+                                        "width": "match_parent",
                                         "weight": "0",
                                         "Value": "OK",
-                                        "Variable": "btn_save_newproduct"
+                                        "Variable": "btn_save_newproduct",
+                                        "gravity_horizontal": "center"
+                                    },
+                                    {
+                                        "type": "TextView",
+                                        "height": "wrap_content",
+                                        "width": "wrap_content",
+                                        "weight": 0,
+                                        "Value": "@tags_product",
+                                        "Variable": "tags_product"
                                     }
                                 ]
                             }
