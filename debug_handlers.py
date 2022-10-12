@@ -22,8 +22,6 @@ class Record(db.Entity):#new
     qty = Required(int)
 
 
-
-
 class Tag(db.Entity):
     id = PrimaryKey(int, auto=True)
     tag_name = Optional(str)
@@ -32,6 +30,7 @@ class Tag(db.Entity):
 
 class Product(db.Entity):
     id = PrimaryKey(int, auto=True)
+    #Name = Optional(str) #!!!!pony.orm.dbapiprovider.OperationalError: no such column: Product.Name
     Partnumber = Optional(str)
     Measure = Optional(str)
     tags = Set(Tag)
@@ -157,6 +156,123 @@ def _input_qty(hashMap, _files=None, _data=None):
 
     return hashMap
 
+def _list_income_on_start(hashMap, _files=None, _data=None):
+    table = {
+        'type': 'table',
+        'textsize': '20',
+
+        'columns': [
+            {
+                'name': 'name',
+                'header': 'Name',
+                'weight': '2'
+            },
+            {
+                'name': 'id',
+                'header': 'ID',
+                'weight': '1'
+            },
+        ]
+    }
+    rows = []
+    with db_session:#new
+        query = select(c for c in List_income)
+        for list_income in query:
+            rows.append({'id': list_income.id, 'name': 'Поступление'})
+
+    table['rows'] = rows
+    hashMap.put('tab_list_income', json.dumps(table))
+
+    return hashMap
+
+def _list_income_on_input(hashMap, _files=None, _data=None):
+
+    if hashMap.get('listener') == 'btn_new_income':
+        hashMap.put('ShowScreen', 'New_income')
+
+    return hashMap
+
+
+def _new_income_on_start(hashMap, _files=None, _data=None):
+    table = {
+        'type': 'table',
+        'textsize': '20',
+
+        'columns': [
+            {
+                'name': 'id',
+                'header': 'ID',
+                'weight': '1'
+            },
+            {
+                'name': 'name',
+                'header': 'Name',
+                'weight': '2'
+            },
+            {
+                'name': 'qty_income ',
+                'header': 'QTY',
+                'weight': '1'
+            },
+        ]
+    }
+    rows = []
+    with db_session:#new
+        query = select(c for c in Income)
+        for income in query:
+            rows.append({'id': income.id, 'name': 'Поступление'})
+
+    table['rows'] = rows
+    hashMap.put('tab_income', json.dumps(table))
+
+    return hashMap
+
+def _income_on_input(hashMap, _files=None, _data=None):
+
+    if hashMap.get('listener') == 'btn_add_income':
+        hashMap.put('ShowScreen', 'List_product')
+
+    return hashMap
+
+# def _list_product_on_start(hashMap, _files=None, _data=None):
+#     table = {
+#         'type': 'table',
+#         'textsize': '20',
+#
+#         'columns': [
+#             {
+#                 'name': 'id',
+#                 'header': 'ID',
+#                 'weight': '1'
+#             },
+#             {
+#                 'name': 'name',
+#                 'header': 'Name',
+#                 'weight': '2'
+#             },
+#         ]
+#     }
+#     rows = []
+#     with db_session:#new
+#         query = select(c for c in Product)
+#         for product in query:
+#             rows.append({'id': product.id, 'name': product.Partnumber})
+#
+#     table['rows'] = rows
+#     hashMap.put('tab_product', json.dumps(table))
+#
+#     return hashMap
+#
+# def _list_product_on_input(hashMap, _files=None, _data=None):
+#
+#     if hashMap.get('listener') == 'tab_product_click':
+#         hashMap.put('ShowScreen', 'Input_qty')
+#
+#     return hashMap
+
+
+
+
 
 def _listproduct_on_start(hashMap, _files=None, _data=None):
     table = {
@@ -180,7 +296,7 @@ def _listproduct_on_start(hashMap, _files=None, _data=None):
     with db_session:#new
         query = select(c for c in Product)
         for product in query:
-            rows.append({'id': product.id, 'name': product.Partnumber})
+            rows.append({'id': product.id, 'name': product.Partnumber})#Name})
 
     table['rows'] = rows
     hashMap.put('tab_product', json.dumps(table))
@@ -207,7 +323,7 @@ def _newproduct_on_input(hashMap, _files=None, _data=None):
     if hashMap.get('listener') == 'btn_save_newproduct':
         with db_session:
             #p = ui_global.Record(barcode=hashMap.get('barcode'), name=hashMap.get('nom'), qty=int(hashMap.get('qty')))
-            p = Product(Partnumber=hashMap.get('name_product'), Measure=hashMap.get('str_measure'))
+            p = Product(Partnumber=hashMap.get('name_product'), Measure=hashMap.get('str_measure'))#Name=hashMap.get('name_product'),
             commit()
             hashMap.put('ShowScreen', 'List-product')
             hashMap.put('toast', 'Добавлен товар')
