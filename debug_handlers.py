@@ -210,67 +210,91 @@ def _new_income_on_start(hashMap, _files=None, _data=None):
                 'weight': '2'
             },
             {
-                'name': 'qty_income ',
+                'name': 'qty_income',
                 'header': 'QTY',
                 'weight': '1'
             },
         ]
     }
+    hashMap.put('name_income', 'Поступления')
     rows = []
     with db_session:#new
         query = select(c for c in Income)
         for income in query:
-            rows.append({'id': income.id, 'name': 'Поступление'})
+            rows.append({'id': income.id, 'name': 'Название товара', 'qty_income': income.qty_income})
 
     table['rows'] = rows
     hashMap.put('tab_income', json.dumps(table))
 
     return hashMap
 
-def _income_on_input(hashMap, _files=None, _data=None):
+def _new_income_on_input(hashMap, _files=None, _data=None):
 
-    if hashMap.get('listener') == 'btn_add_income':
+    if hashMap.get('listener') == 'btn_add_product':
         hashMap.put('ShowScreen', 'List_product')
 
     return hashMap
 
-# def _list_product_on_start(hashMap, _files=None, _data=None):
-#     table = {
-#         'type': 'table',
-#         'textsize': '20',
-#
-#         'columns': [
-#             {
-#                 'name': 'id',
-#                 'header': 'ID',
-#                 'weight': '1'
-#             },
-#             {
-#                 'name': 'name',
-#                 'header': 'Name',
-#                 'weight': '2'
-#             },
-#         ]
-#     }
-#     rows = []
-#     with db_session:#new
-#         query = select(c for c in Product)
-#         for product in query:
-#             rows.append({'id': product.id, 'name': product.Partnumber})
-#
-#     table['rows'] = rows
-#     hashMap.put('tab_product', json.dumps(table))
-#
-#     return hashMap
-#
-# def _list_product_on_input(hashMap, _files=None, _data=None):
-#
-#     if hashMap.get('listener') == 'tab_product_click':
-#         hashMap.put('ShowScreen', 'Input_qty')
-#
-#     return hashMap
+def _add_product_on_start(hashMap, _files=None, _data=None):
+    table = {
+        'type': 'table',
+        'textsize': '20',
 
+        'columns': [
+            {
+                'name': 'id',
+                'header': 'ID',
+                'weight': '1'
+            },
+            {
+                'name': 'name',
+                'header': 'Name',
+                'weight': '2'
+            },
+        ]
+    }
+    rows = []
+    with db_session:#new
+        query = select(c for c in Product)
+        for product in query:
+            rows.append({'id': product.id, 'name': product.Partnumber})
 
+    table['rows'] = rows
+    hashMap.put('tab_product', json.dumps(table))
+
+    return hashMap
+
+def _add_product_on_input(hashMap, _files=None, _data=None):
+    selected_line={}
+    if hashMap.get('listener') == 'TableClick':
+        hashMap.put('ShowScreen', 'Input_qty')
+
+    # if hashMap.get('listener') == 'tab_product_click':
+    #     var1 = 'selected_line_id'
+    #     hashMap.put('ShowScreen', 'Input_qty')
+
+    return hashMap
+
+def _listinput_qty_on_start(hashMap, _files=None, _data=None):
+    selected_line = json.loads(hashMap.d.get('selected_line'))
+    name_product = selected_line['name']
+    hashMap.put('name_product', str(name_product))
+    if not hashMap.containsKey('qty_product'):
+        hashMap.put('qty_product', '0')
+
+    return hashMap
+
+def _listinput_qty_on_input(hashMap, _files=None, _data=None):
+
+    if hashMap.get('listener') == 'btn_qty':
+        with db_session:
+            p = Product(Partnumber=hashMap.get('name_product'),
+                        Measure=hashMap.get('str_measure'))  # Name=hashMap.get('name_product'),
+            commit()
+            hashMap.put('ShowScreen', 'New_income')
+            hashMap.put('toast', 'Товар добавлен в список поступления')
+
+    return hashMap
 
 
 
