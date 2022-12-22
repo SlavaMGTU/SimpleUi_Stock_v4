@@ -23,7 +23,7 @@
                         "noConfirmation": true,
                         "hideBottomBarScreen": true,
                         "onlineOnStart": false,
-                        "send_when_opened": false,
+                        "send_when_opened": true,
                         "onlineOnInput": false,
                         "DefOnlineOnCreate": "",
                         "DefOnlineOnInput": "",
@@ -3565,7 +3565,8 @@
                                     }
                                 ]
                             }
-                        ]
+                        ],
+                        "onlineOnAfterStart": false
                     }
                 ]
             },
@@ -3620,7 +3621,9 @@
                         "DefOnInput": "_barcode_on_input",
                         "DefOnCreate": "_barcode_on_start",
                         "DefOnlineOnCreate": "",
-                        "noConfirmation": false
+                        "noConfirmation": false,
+                        "send_when_opened": true,
+                        "onlineOnAfterStart": false
                     },
                     {
                         "Name": "Input-qty",
@@ -3703,7 +3706,8 @@
                         "hideBottomBarScreen": false,
                         "onlineOnStart": false,
                         "onlineOnInput": false,
-                        "DefOnInput": "_input_qty"
+                        "DefOnInput": "_input_qty",
+                        "onlineOnAfterStart": false
                     }
                 ]
             },
@@ -3723,7 +3727,9 @@
                         "onlineOnStart": false,
                         "onlineOnInput": false,
                         "DefOnCreate": "_listbuy_on_start",
-                        "DefOnInput": "_listbuy_on_input"
+                        "DefOnInput": "_listbuy_on_input",
+                        "send_when_opened": true,
+                        "onlineOnAfterStart": false
                     }
                 ],
                 "PlanFactHeader": "ИзмНазвПлФакт"
@@ -3789,7 +3795,9 @@
                         "onlineOnInput": false,
                         "noConfirmation": false,
                         "DefOnCreate": "_list_income_on_start",
-                        "DefOnInput": "_list_income_on_input"
+                        "DefOnInput": "_list_income_on_input",
+                        "send_when_opened": true,
+                        "onlineOnAfterStart": false
                     },
                     {
                         "Name": "New_income",
@@ -3817,8 +3825,8 @@
                                         "height": "wrap_content",
                                         "width": "wrap_content",
                                         "weight": "0",
-                                        "Value": "@name_income",
-                                        "Variable": "name_income"
+                                        "Value": "@number_income",
+                                        "Variable": "number_income"
                                     },
                                     {
                                         "type": "TableLayout",
@@ -3841,10 +3849,21 @@
                                         "height": "wrap_content",
                                         "width": "wrap_content",
                                         "weight": "0",
+                                        "Value": "Del Income",
+                                        "Variable": "btn_del_income"
+                                    },
+                                    {
+                                        "type": "Button",
+                                        "height": "wrap_content",
+                                        "width": "wrap_content",
+                                        "weight": "0",
                                         "Value": "Add Product",
                                         "Variable": "btn_add_product"
                                     }
-                                ]
+                                ],
+                                "BackgroundColor": "",
+                                "StrokeWidth": "",
+                                "Padding": ""
                             }
                         ],
                         "Timer": false,
@@ -3855,7 +3874,9 @@
                         "onlineOnStart": false,
                         "onlineOnInput": false,
                         "DefOnCreate": "_new_income_on_start",
-                        "DefOnInput": "_new_income_on_input"
+                        "DefOnInput": "_new_income_on_input",
+                        "send_when_opened": true,
+                        "onlineOnAfterStart": false
                     },
                     {
                         "Name": "List_product",
@@ -3913,7 +3934,9 @@
                         "onlineOnStart": false,
                         "onlineOnInput": false,
                         "DefOnCreate": "_add_product_on_start",
-                        "DefOnInput": "_add_product_on_input"
+                        "DefOnInput": "_add_product_on_input",
+                        "send_when_opened": true,
+                        "onlineOnAfterStart": false
                     },
                     {
                         "Name": "Input_qty",
@@ -4027,7 +4050,9 @@
                         "onlineOnStart": false,
                         "onlineOnInput": false,
                         "DefOnCreate": "_listinput_qty_on_start",
-                        "DefOnInput": "_listinput_qty_on_input"
+                        "DefOnInput": "_listinput_qty_on_input",
+                        "send_when_opened": true,
+                        "onlineOnAfterStart": false
                     }
                 ]
             },
@@ -4097,7 +4122,9 @@
                         "onlineOnInput": false,
                         "DefOnCreate": "_listproduct_on_start",
                         "DefOnInput": "_listproduct_on_input",
-                        "noConfirmation": false
+                        "noConfirmation": false,
+                        "send_when_opened": true,
+                        "onlineOnAfterStart": false
                     },
                     {
                         "Name": "New-product",
@@ -4158,7 +4185,9 @@
                         "onlineOnStart": false,
                         "onlineOnInput": false,
                         "DefOnCreate": "_newproduct_on_start",
-                        "DefOnInput": "_newproduct_on_input"
+                        "DefOnInput": "_newproduct_on_input",
+                        "send_when_opened": true,
+                        "onlineOnAfterStart": false
                     }
                 ]
             }

@@ -8,7 +8,7 @@ import json
 from pony.orm import select, db_session, commit
 
 #import ui_global
-
+from pony.utils import count
 
 DB_PATH ='db.db'  #'db\\db.db'#new
 #DB_PATH = 'sqlite_dev.db'
@@ -188,6 +188,10 @@ def _list_income_on_start(hashMap, _files=None, _data=None):
 def _list_income_on_input(hashMap, _files=None, _data=None):
 
     if hashMap.get('listener') == 'btn_new_income':
+
+        hashMap.put('ShowScreen', 'New_income')
+
+    if hashMap.get('listener') == 'TableClick':# 'tab_list_income_click'
         hashMap.put('ShowScreen', 'New_income')
 
     return hashMap
@@ -216,12 +220,35 @@ def _new_income_on_start(hashMap, _files=None, _data=None):
             },
         ]
     }
-    hashMap.put('name_income', 'Поступления')
+
+    try:
+        selected_line = json.loads(hashMap.d.get('selected_line'))
+    except:
+        with db_session:
+            i = Income()
+            l = List_income(incomes=i)  # create NEW income
+            number_income = select(s for s in List_income).count()# НЕПРАВИЛЬНО СЧИТАЕТ количество строк в БД!!!!
+            commit()
+            hashMap.put('toast', 'добавлен НОВЫЙ список поступления')
+            hashMap.put('number_income', str(number_income))
+
+    else:
+        selected_line = json.loads(hashMap.d.get('selected_line'))
+        number_income = selected_line['id']
+        hashMap.put('number_income', str(number_income))
+
+    # selected_line = json.loads(hashMap.d.get('selected_line'))
+    # name_income = selected_line['id']
+    # hashMap.put('name_income', 'Поступления '+ str(name_income))
+    # if not hashMap.containsKey('qty_product'):
+    #     hashMap.put('qty_product', '0')
+   #hashMap.put('name_income', 'Поступления')
     rows = []
     with db_session:#new
-        query = select(c for c in Income)
-        for income in query:
-            rows.append({'id': income.id, 'name': 'Название товара', 'qty_income': income.qty_income})
+        if hasattr(Income[number_income], '__iter__'):
+            query = select(c for c in Income[number_income])
+            for income in query:
+                rows.append({'id': income.id, 'name': 'Название товара', 'qty_income': income.qty_income})
 
     table['rows'] = rows
     hashMap.put('tab_income', json.dumps(table))
@@ -285,14 +312,15 @@ def _listinput_qty_on_start(hashMap, _files=None, _data=None):
     return hashMap
 
 def _listinput_qty_on_input(hashMap, _files=None, _data=None):
-
+    selected_line = json.loads(hashMap.d.get('selected_line'))
     if hashMap.get('listener') == 'btn_qty':
         with db_session:
-            p = Product(Partnumber=hashMap.get('name_product'),
-                        Measure=hashMap.get('str_measure'))  # Name=hashMap.get('name_product'),
+            p = Product[selected_line['id']]  # Name=hashMap.get('name_product'),
+            i = Income(qty_income= hashMap.get('qty_product') , products=p)
+            l=List_income(incomes=i)# ЗАКЛАДКА!!!!
             commit()
             hashMap.put('ShowScreen', 'New_income')
-            hashMap.put('toast', 'Товар добавлен в список поступления')
+            hashMap.put('toast', 'добавлен кол-ва товара в список поступления')
 
     return hashMap
 

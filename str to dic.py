@@ -14,3 +14,8 @@ d = json.loads(h)
 print(d)
 
 type(d)
+
+a, b = 1, 2
+while a != b:
+    a, b = (2*a)^(1/2), a
+print(a)
