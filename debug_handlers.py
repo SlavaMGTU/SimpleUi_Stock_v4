@@ -25,50 +25,54 @@ class Record(db.Entity):#new
 class Tag(db.Entity):
     id = PrimaryKey(int, auto=True)
     tag_name = Optional(str)
-    products = Set('Product')
+    products = Set('Product', column='tags')
 
 
 class Product(db.Entity):
     id = PrimaryKey(int, auto=True)
-    #Name = Optional(str) #!!!!pony.orm.dbapiprovider.OperationalError: no such column: Product.Name
+    Name = Optional(str) #!!!!pony.orm.dbapiprovider.OperationalError: no such column: Product.Name
     Partnumber = Optional(str)
     Measure = Optional(str)
-    tags = Set(Tag)
-    list_products = Set('List_product')
-    incomes = Set('Income')
-    buys = Set('Buy')
+    tags = Set(Tag, column='products')
+    list_products = Set('List_product', column='products')
+    incomes = Set('Income', cascade_delete=False)
+    buys = Set('Buy', cascade_delete=False)
 
 
 class List_product(db.Entity):
     id = PrimaryKey(int, auto=True)
     qty_buy = Required(int, default=0)
     qty_income = Required(int, default=0)
-    products = Set(Product)
+    products = Set(Product, column='list_products')
 
 
 class Income(db.Entity):
     id = PrimaryKey(int, auto=True)
     qty_income = Optional(int, default=0)
-    products = Set(Product)
-    list_incomes = Set('List_income')
+    products = Optional(Product)#, column='incomes'
+    list_incomes = Optional('List_income', column='incomes')
 
 
 class Buy(db.Entity):
     id = PrimaryKey(int, auto=True)
     qty_buy = Optional(int, default=0)
-    products = Set(Product)
-    list_buys = Set('List_buy')
+    products = Optional(Product)#, column='buys'
+    list_buys = Optional('List_buy', column='buys')
 
 
 class List_buy(db.Entity):
     id = PrimaryKey(int, auto=True)
-    buys = Set(Buy)
+    buys = Set(Buy, cascade_delete=True)  # NotImplementedError:', column='list_buys' Parameter 'column' is not allowed for many-to-one attribute List_buy.buys
 
 
 class List_income(db.Entity):
     id = PrimaryKey(int, auto=True)
-    incomes = Set(Income)
+    incomes = Set(Income, cascade_delete=True)  # NotImplementedError:', column='list_incomes' Parameter 'column' is not allowed for many-to-one attribute List_income.incomes
 
+
+class Const(db.Entity):
+    id = PrimaryKey(int, auto=True)# id=1/2 - Buy-List_Buy and id=3/4 - Income_List_income
+    number = Optional(int, default=1)
 
 
 app = Flask(__name__)
@@ -176,6 +180,12 @@ def _list_income_on_start(hashMap, _files=None, _data=None):
     }
     rows = []
     with db_session:#new
+
+        number_list = select(s for s in List_income).count()  # СЧИТАЕТ количество строк в БД
+
+        if number_list ==0:
+            l = List_income()  # create NEW List_income
+
         query = select(c for c in List_income)
         for list_income in query:
             rows.append({'id': list_income.id, 'name': 'Поступление'})
@@ -227,28 +237,28 @@ def _new_income_on_start(hashMap, _files=None, _data=None):
         with db_session:
             i = Income()
             l = List_income(incomes=i)  # create NEW income
-            number_income = select(s for s in List_income).count()# НЕПРАВИЛЬНО СЧИТАЕТ количество строк в БД!!!!
+            number_income = select(s for s in List_income).count()  # НЕПРАВИЛЬНО СЧИТАЕТ количество строк в БД!!!!
             commit()
-            hashMap.put('toast', 'добавлен НОВЫЙ список поступления')
-            hashMap.put('number_income', str(number_income))
+        hashMap.put('toast', 'добавлен НОВЫЙ список поступления')
+        hashMap.put('number_income', str(number_income))
 
     else:
         selected_line = json.loads(hashMap.d.get('selected_line'))
         number_income = selected_line['id']
         hashMap.put('number_income', str(number_income))
 
-    # selected_line = json.loads(hashMap.d.get('selected_line'))
-    # name_income = selected_line['id']
-    # hashMap.put('name_income', 'Поступления '+ str(name_income))
-    # if not hashMap.containsKey('qty_product'):
-    #     hashMap.put('qty_product', '0')
-   #hashMap.put('name_income', 'Поступления')
     rows = []
-    with db_session:#new
-        if hasattr(Income[number_income], '__iter__'):
-            query = select(c for c in Income[number_income])
+
+    with db_session:#new table
+        cons = Const[4]
+        cons.number = number_income#counted the number of rows in the List_income
+        lis=List_income[number_income]
+        incomes=lis.incomes
+        query = select(c for c in incomes)
+        if hasattr(query, '__iter__'):
             for income in query:
                 rows.append({'id': income.id, 'name': 'Название товара', 'qty_income': income.qty_income})
+        commit()
 
     table['rows'] = rows
     hashMap.put('tab_income', json.dumps(table))
@@ -257,7 +267,27 @@ def _new_income_on_start(hashMap, _files=None, _data=None):
 
 def _new_income_on_input(hashMap, _files=None, _data=None):
 
+    if hashMap.get('listener') == 'btn_del_income':
+        with db_session:
+            selected_line = json.loads(hashMap.d.get('selected_line'))
+            number_income = selected_line['id']
+            List_income[number_income].delete()  # del income
+            commit()
+        hashMap.put('toast', 'удален список поступления')
+        hashMap.put('ShowScreen', 'List_income')
+
     if hashMap.get('listener') == 'btn_add_product':
+        with db_session:
+            cons1 = Const[4]
+            number_list = cons1.number# get number from List_income
+            list_income = List_income[number_list]
+            i = Income()  # create new Income
+            number_income= select(s for s in Income).count()
+            list_income.incomes.add(Income[number_income])
+            cons = Const[3]
+            cons.number = i.id #counted the number of ID in the Income
+            commit()
+        hashMap.put('toast', 'добавлена НОВая строчка товара')
         hashMap.put('ShowScreen', 'List_product')
 
     return hashMap
@@ -284,7 +314,7 @@ def _add_product_on_start(hashMap, _files=None, _data=None):
     with db_session:#new
         query = select(c for c in Product)
         for product in query:
-            rows.append({'id': product.id, 'name': product.Partnumber})
+            rows.append({'id': product.id, 'name': product.Partnumber})#ERROR!!!! product.Partnumber -> product.Name
 
     table['rows'] = rows
     hashMap.put('tab_product', json.dumps(table))
@@ -292,13 +322,12 @@ def _add_product_on_start(hashMap, _files=None, _data=None):
     return hashMap
 
 def _add_product_on_input(hashMap, _files=None, _data=None):
-    selected_line={}
-    if hashMap.get('listener') == 'TableClick':
+
+    if hashMap.get('listener') == 'TableClick':#tab_product_click
         hashMap.put('ShowScreen', 'Input_qty')
 
-    # if hashMap.get('listener') == 'tab_product_click':
-    #     var1 = 'selected_line_id'
-    #     hashMap.put('ShowScreen', 'Input_qty')
+    if hashMap.get('listener') == 'btn_new_product':
+        hashMap.put('ShowScreen', 'New_income')
 
     return hashMap
 
@@ -313,14 +342,21 @@ def _listinput_qty_on_start(hashMap, _files=None, _data=None):
 
 def _listinput_qty_on_input(hashMap, _files=None, _data=None):
     selected_line = json.loads(hashMap.d.get('selected_line'))
+    qty_product = json.loads(hashMap.d.get('qty_product'))
     if hashMap.get('listener') == 'btn_qty':
         with db_session:
-            p = Product[selected_line['id']]  # Name=hashMap.get('name_product'),
-            i = Income(qty_income= hashMap.get('qty_product') , products=p)
-            l=List_income(incomes=i)# ЗАКЛАДКА!!!!
+            p = Product[selected_line['id']]  # Name=hashMap.get('name_product'),?????ОШИБКА!!! не те скобки????
+
+            cons = Const[3]
+            number_income = cons.number  # get the number of ID in the Income
+            i = Income[number_income]
+            i.qty_income = qty_product
+            i.products = p
+
             commit()
-            hashMap.put('ShowScreen', 'New_income')
-            hashMap.put('toast', 'добавлен кол-ва товара в список поступления')
+
+        hashMap.put('ShowScreen', 'New_income')
+        hashMap.put('toast', 'добавлено кол-во товара в список поступления')
 
     return hashMap
 

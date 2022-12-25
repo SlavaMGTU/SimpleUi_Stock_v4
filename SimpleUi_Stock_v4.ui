@@ -4039,7 +4039,10 @@
                                         "Value": "Ok",
                                         "Variable": "btn_qty"
                                     }
-                                ]
+                                ],
+                                "BackgroundColor": "",
+                                "StrokeWidth": "",
+                                "Padding": ""
                             }
                         ],
                         "Timer": false,
