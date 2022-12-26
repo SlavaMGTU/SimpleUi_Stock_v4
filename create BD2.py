@@ -79,15 +79,17 @@ class Const(db.Entity):
 db.generate_mapping(create_tables=True)
 
 with db_session:
-      for number in range(10):
-          i = Income(qty_income=10-number)#qty_income=0, products=p
-          l= List_income(incomes=i)
-          p = Product(incomes=i, Partnumber='Partnumber' + str(number), Measure='Measure1', Name='Name1')  # Name=hashMap.get('name_product'),
+      # for number in range(10):
+      #     i = Income(qty_income=10-number)#qty_income=0, products=p
+      #     l= List_income(incomes=i)
+      #     p = Product(incomes=i, Partnumber='Partnumber' + str(number), Measure='Measure1', Name='Name1')  # Name=hashMap.get('name_product'),
+      #
+      # #List_income[number].incomes.add(i)
 
-      #List_income[number].incomes.add(i)
-      commit()
-
-
+    # for number in range(1, 3):
+    #     cons1 = Const()
+    #     cons1.number =1 # get number from List_income
+    # commit()
     # a = select(s for s in List_income).count()#
     # for number in range(1, 3):
     #     List_income[number].delete()

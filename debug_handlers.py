@@ -183,8 +183,8 @@ def _list_income_on_start(hashMap, _files=None, _data=None):
 
         number_list = select(s for s in List_income).count()  # СЧИТАЕТ количество строк в БД
 
-        if number_list ==0:
-            l = List_income()  # create NEW List_income
+        # if number_list ==0:
+        #     l = List_income()  # create NEW List_income
 
         query = select(c for c in List_income)
         for list_income in query:
@@ -199,9 +199,29 @@ def _list_income_on_input(hashMap, _files=None, _data=None):
 
     if hashMap.get('listener') == 'btn_new_income':
 
+        with db_session:
+            #i = Income()
+            l = List_income()  # create NEW List_income #incomes=i
+            number_income = l.id  # СЧИТАЕТ количество строк в БД!!!!
+            cons = Const[4]
+            cons.number = number_income #counted the number of rows in the List_income
+            commit()
+
+        hashMap.put('toast', 'добавлен НОВЫЙ список поступления')
         hashMap.put('ShowScreen', 'New_income')
 
     if hashMap.get('listener') == 'TableClick':# 'tab_list_income_click'
+
+        selected_line = json.loads(hashMap.d.get('selected_line'))
+        number_income = selected_line['id']
+        with db_session:
+            #i = Income()
+            cons = Const[4]
+            cons.number = number_income #counted the number of rows in the List_income
+            commit()
+
+        #hashMap.put('number_income', str(number_income))
+
         hashMap.put('ShowScreen', 'New_income')
 
     return hashMap
@@ -231,33 +251,22 @@ def _new_income_on_start(hashMap, _files=None, _data=None):
         ]
     }
 
-    try:
-        selected_line = json.loads(hashMap.d.get('selected_line'))
-    except:
-        with db_session:
-            i = Income()
-            l = List_income(incomes=i)  # create NEW income
-            number_income = select(s for s in List_income).count()  # НЕПРАВИЛЬНО СЧИТАЕТ количество строк в БД!!!!
-            commit()
-        hashMap.put('toast', 'добавлен НОВЫЙ список поступления')
-        hashMap.put('number_income', str(number_income))
-
-    else:
-        selected_line = json.loads(hashMap.d.get('selected_line'))
-        number_income = selected_line['id']
-        hashMap.put('number_income', str(number_income))
-
     rows = []
 
     with db_session:#new table
         cons = Const[4]
-        cons.number = number_income#counted the number of rows in the List_income
+        number_income = cons.number #counted the number of rows in the List_income
         lis=List_income[number_income]
         incomes=lis.incomes
         query = select(c for c in incomes)
         if hasattr(query, '__iter__'):
             for income in query:
-                rows.append({'id': income.id, 'name': 'Название товара', 'qty_income': income.qty_income})
+                try:
+                    name = income.products.Partnumber
+                except AttributeError:
+                    rows.append({'id': income.id, 'name': 'Наименование товара', 'qty_income': income.qty_income})
+                else:
+                    rows.append({'id': income.id, 'name': name, 'qty_income': income.qty_income})
         commit()
 
     table['rows'] = rows
@@ -271,7 +280,7 @@ def _new_income_on_input(hashMap, _files=None, _data=None):
         with db_session:
             selected_line = json.loads(hashMap.d.get('selected_line'))
             number_income = selected_line['id']
-            List_income[number_income].delete()  # del income
+            List_income[number_income].delete()  # del List_income
             commit()
         hashMap.put('toast', 'удален список поступления')
         hashMap.put('ShowScreen', 'List_income')
@@ -280,15 +289,23 @@ def _new_income_on_input(hashMap, _files=None, _data=None):
         with db_session:
             cons1 = Const[4]
             number_list = cons1.number# get number from List_income
-            list_income = List_income[number_list]
+            list_income = List_income[number_list]# get List_income
             i = Income()  # create new Income
-            number_income= select(s for s in Income).count()
-            list_income.incomes.add(Income[number_income])
+            list_income.incomes.add(i)
             cons = Const[3]
             cons.number = i.id #counted the number of ID in the Income
             commit()
         hashMap.put('toast', 'добавлена НОВая строчка товара')
         hashMap.put('ShowScreen', 'List_product')
+
+    if hashMap.get('listener') == 'TableClick':#tab_income_click
+        with db_session:
+            selected_line = json.loads(hashMap.d.get('selected_line'))
+            cons = Const[3]
+            cons.number = selected_line['id'] #counted the number of ID in the Income
+            commit()
+        hashMap.put('toast', 'Отредактируйте количество товара')
+        hashMap.put('ShowScreen', 'Input_qty')
 
     return hashMap
 
@@ -335,8 +352,6 @@ def _listinput_qty_on_start(hashMap, _files=None, _data=None):
     selected_line = json.loads(hashMap.d.get('selected_line'))
     name_product = selected_line['name']
     hashMap.put('name_product', str(name_product))
-    if not hashMap.containsKey('qty_product'):
-        hashMap.put('qty_product', '0')
 
     return hashMap
 
@@ -345,7 +360,10 @@ def _listinput_qty_on_input(hashMap, _files=None, _data=None):
     qty_product = json.loads(hashMap.d.get('qty_product'))
     if hashMap.get('listener') == 'btn_qty':
         with db_session:
-            p = Product[selected_line['id']]  # Name=hashMap.get('name_product'),?????ОШИБКА!!! не те скобки????
+            if 'qty_income' in selected_line:
+                p = Product.get(Partnumber=selected_line['name'])
+            else:
+                p = Product[selected_line['id']]  # Name=hashMap.get('name_product'),?????ОШИБКА!!! не те скобки????
 
             cons = Const[3]
             number_income = cons.number  # get the number of ID in the Income
@@ -355,8 +373,9 @@ def _listinput_qty_on_input(hashMap, _files=None, _data=None):
 
             commit()
 
-        hashMap.put('ShowScreen', 'New_income')
-        hashMap.put('toast', 'добавлено кол-во товара в список поступления')
+    hashMap.remove('selected_line')# удаление строки для того чтоб не смещалось значения с Product на List_income
+    hashMap.put('ShowScreen', 'New_income')
+    hashMap.put('toast', 'добавлено кол-во товара в список поступления')
 
     return hashMap
 
