@@ -1,0 +1,173 @@
+{
+    "ClientConfiguration": {
+        "ConfigurationName": "Новая конфигурация",
+        "ConfigurationDescription": "Разработка новой конфигурации SimpleUI",
+        "ConfigurationVersion": "0.0.1",
+        "Processes": [
+            {
+                "type": "Process",
+                "ProcessName": "Новый процесс",
+                "PlanFactHeader": "План-факт",
+                "DefineOnBackPressed": false,
+                "hidden": false,
+                "login_screen": false,
+                "SC": false,
+                "Operations": [
+                    {
+                        "type": "Operation",
+                        "Name": "Новый экран",
+                        "Timer": false,
+                        "hideToolBarScreen": false,
+                        "noScroll": false,
+                        "handleKeyUp": false,
+                        "noConfirmation": false,
+                        "hideBottomBarScreen": false,
+                        "onlineOnStart": false,
+                        "send_when_opened": false,
+                        "onlineOnInput": false,
+                        "DefOnlineOnCreate": "",
+                        "DefOnlineOnInput": "",
+                        "DefOnCreate": "",
+                        "DefOnInput": "",
+                        "Elements": []
+                    }
+                ]
+            },
+            {
+                "ProcessName": "Scan-offline",
+                "type": "Process",
+                "Operations": [
+                    {
+                        "Name": "Scan-offline",
+                        "type": "Operation",
+                        "Elements": [
+                            {
+                                "Value": "",
+                                "Variable": "",
+                                "type": "LinearLayout",
+                                "weight": "0",
+                                "height": "match_parent",
+                                "width": "match_parent",
+                                "orientation": "vertical",
+                                "Elements": [
+                                    {
+                                        "type": "TextView",
+                                        "height": "wrap_content",
+                                        "width": "wrap_content",
+                                        "weight": "0",
+                                        "Value": "Сканируйте штрихкод",
+                                        "Variable": ""
+                                    },
+                                    {
+                                        "type": "TableLayout",
+                                        "height": "wrap_content",
+                                        "width": "wrap_content",
+                                        "weight": "0",
+                                        "Value": "@tab_scan",
+                                        "Variable": "table_click"
+                                    }
+                                ]
+                            },
+                            {
+                                "Value": "",
+                                "Variable": "barcode_input",
+                                "type": "barcode"
+                            }
+                        ],
+                        "Timer": false,
+                        "hideToolBarScreen": false,
+                        "noScroll": false,
+                        "handleKeyUp": false,
+                        "hideBottomBarScreen": false,
+                        "onlineOnStart": false,
+                        "onlineOnInput": false,
+                        "DefOnInput": "_barcode_on_input",
+                        "DefOnCreate": "_barcode_on_start",
+                        "DefOnlineOnCreate": "",
+                        "noConfirmation": false
+                    },
+                    {
+                        "Name": "Input-qty",
+                        "type": "Operation",
+                        "Elements": [
+                            {
+                                "Value": "Ввод товара",
+                                "Variable": "",
+                                "type": "signature"
+                            },
+                            {
+                                "Value": "Ввод количества товара",
+                                "Variable": "",
+                                "type": "signature"
+                            },
+                            {
+                                "Value": "",
+                                "Variable": "",
+                                "type": "LinearLayout",
+                                "weight": "0",
+                                "height": "match_parent",
+                                "width": "match_parent",
+                                "orientation": "vertical",
+                                "Elements": [
+                                    {
+                                        "type": "TextView",
+                                        "height": "match_parent",
+                                        "width": "match_parent",
+                                        "weight": "0",
+                                        "Value": "Название товара",
+                                        "Variable": ""
+                                    },
+                                    {
+                                        "type": "EditTextText",
+                                        "height": "match_parent",
+                                        "width": "match_parent",
+                                        "weight": "0",
+                                        "Value": "@nom",
+                                        "Variable": "nom"
+                                    },
+                                    {
+                                        "type": "TextView",
+                                        "height": "match_parent",
+                                        "width": "match_parent",
+                                        "weight": "0",
+                                        "Value": "Количество",
+                                        "Variable": ""
+                                    },
+                                    {
+                                        "type": "EditTextNumeric",
+                                        "height": "match_parent",
+                                        "width": "match_parent",
+                                        "weight": "0",
+                                        "Value": "@qty",
+                                        "Variable": "qty"
+                                    },
+                                    {
+                                        "type": "Button",
+                                        "height": "match_parent",
+                                        "width": "match_parent",
+                                        "weight": "0",
+                                        "Value": "OK",
+                                        "Variable": "btn_qty"
+                                    }
+                                ]
+                            }
+                        ],
+                        "Timer": false,
+                        "hideToolBarScreen": false,
+                        "noScroll": false,
+                        "handleKeyUp": false,
+                        "hideBottomBarScreen": false,
+                        "onlineOnStart": false,
+                        "onlineOnInput": false,
+                        "DefOnInput": "_input_qty"
+                    }
+                ]
+            }
+        ],
+        "ConfigurationSettings": {
+            "uid": "249556819ec740179d7e5f6aa86c4f06"
+        },
+        "ConfigurationTags": "Py,off-line",
+        "RunPython": true
+    }
+}

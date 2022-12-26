@@ -1,0 +1,214 @@
+{
+    "ClientConfiguration": {
+        "ConfigurationName": "New Konf",
+        "ConfigurationDescription": "SimpleUI New Konf",
+        "ConfigurationVersion": "0.0.1",
+        "Processes": [
+            {
+                "type": "Process",
+                "ProcessName": "aPluSb",
+                "PlanFactHeader": "План-факт",
+                "DefineOnBackPressed": false,
+                "hidden": false,
+                "login_screen": false,
+                "SC": false,
+                "Operations": [
+                    {
+                        "type": "Operation",
+                        "Name": "aPluSb",
+                        "Timer": false,
+                        "hideToolBarScreen": false,
+                        "noScroll": false,
+                        "handleKeyUp": false,
+                        "noConfirmation": false,
+                        "hideBottomBarScreen": false,
+                        "onlineOnStart": false,
+                        "send_when_opened": false,
+                        "onlineOnInput": false,
+                        "DefOnlineOnCreate": "",
+                        "DefOnlineOnInput": "",
+                        "DefOnCreate": "sample1_on_create",
+                        "DefOnInput": "_sample1_on_input",
+                        "Elements": [
+                            {
+                                "Value": "",
+                                "Variable": "",
+                                "type": "LinearLayout",
+                                "weight": "0",
+                                "height": "match_parent",
+                                "width": "match_parent",
+                                "orientation": "vertical",
+                                "Elements": [
+                                    {
+                                        "type": "TextView",
+                                        "height": "wrap_content",
+                                        "width": "wrap_content",
+                                        "weight": "0",
+                                        "Value": "Sample_A",
+                                        "Variable": ""
+                                    },
+                                    {
+                                        "type": "EditTextNumeric",
+                                        "height": "wrap_content",
+                                        "width": "wrap_content",
+                                        "weight": "0",
+                                        "Value": "@a",
+                                        "Variable": "a"
+                                    },
+                                    {
+                                        "type": "TextView",
+                                        "height": "wrap_content",
+                                        "width": "wrap_content",
+                                        "weight": "0",
+                                        "Value": "Sample_B",
+                                        "Variable": ""
+                                    },
+                                    {
+                                        "type": "EditTextNumeric",
+                                        "height": "wrap_content",
+                                        "width": "wrap_content",
+                                        "weight": "0",
+                                        "Value": "@b",
+                                        "Variable": "b"
+                                    },
+                                    {
+                                        "type": "Button",
+                                        "height": "wrap_content",
+                                        "width": "wrap_content",
+                                        "weight": "0",
+                                        "Value": "Sum",
+                                        "Variable": "btn_res"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "ProcessName": "Scan-offline",
+                "type": "Process",
+                "Operations": [
+                    {
+                        "Name": "Scan-offline",
+                        "type": "Operation",
+                        "Elements": [
+                            {
+                                "Value": "",
+                                "Variable": "",
+                                "type": "LinearLayout",
+                                "weight": "0",
+                                "height": "match_parent",
+                                "width": "match_parent",
+                                "orientation": "vertical",
+                                "Elements": [
+                                    {
+                                        "type": "TextView",
+                                        "height": "wrap_content",
+                                        "width": "wrap_content",
+                                        "weight": "0",
+                                        "Value": "Сканируйте штрихкод",
+                                        "Variable": ""
+                                    },
+                                    {
+                                        "type": "TableLayout",
+                                        "height": "wrap_content",
+                                        "width": "wrap_content",
+                                        "weight": "0",
+                                        "Value": "@tab_scan",
+                                        "Variable": "table_click"
+                                    }
+                                ]
+                            },
+                            {
+                                "Value": "",
+                                "Variable": "barcode_input",
+                                "type": "barcode"
+                            }
+                        ],
+                        "Timer": false,
+                        "hideToolBarScreen": false,
+                        "noScroll": false,
+                        "handleKeyUp": false,
+                        "hideBottomBarScreen": false,
+                        "onlineOnStart": false,
+                        "onlineOnInput": false,
+                        "DefOnInput": "_barcode_on_input",
+                        "DefOnCreate": "_barcode_on_start"
+                    },
+                    {
+                        "Name": "Input-qty",
+                        "type": "Operation",
+                        "Elements": [
+                            {
+                                "Value": "Ввод количества",
+                                "Variable": "",
+                                "type": "signature"
+                            },
+                            {
+                                "Value": "@nom",
+                                "Variable": "",
+                                "type": "signature"
+                            },
+                            {
+                                "Value": "",
+                                "Variable": "",
+                                "type": "LinearLayout",
+                                "weight": "0",
+                                "height": "wrap_content",
+                                "width": "wrap_content",
+                                "orientation": "vertical",
+                                "Elements": [
+                                    {
+                                        "type": "TextView",
+                                        "height": "wrap_content",
+                                        "width": "wrap_content",
+                                        "weight": "0",
+                                        "Value": "Количество",
+                                        "Variable": ""
+                                    },
+                                    {
+                                        "type": "EditTextNumeric",
+                                        "height": "wrap_content",
+                                        "width": "wrap_content",
+                                        "weight": "0",
+                                        "Value": "",
+                                        "Variable": "qty"
+                                    }
+                                ]
+                            }
+                        ],
+                        "Timer": false,
+                        "hideToolBarScreen": false,
+                        "noScroll": false,
+                        "handleKeyUp": false,
+                        "hideBottomBarScreen": false,
+                        "onlineOnStart": false,
+                        "onlineOnInput": false,
+                        "DefOnInput": "_input_qty"
+                    }
+                ]
+            }
+        ],
+        "ConfigurationSettings": {
+            "uid": "8390a70e4f64433bbb50b8c052664886"
+        },
+        "ConfigurationTags": "Py,off-line",
+        "RunPython": true,
+        "PyHandlers": "ZnJvbSBwb255Lm9ybS5jb3JlIGltcG9ydCBkYl9zZXNzaW9uCmZyb20gcG9ueSBpbXBvcnQgb3JtCmZyb20gcG9ueS5vcm0gaW1wb3J0IERhdGFiYXNlLFJlcXVpcmVkLFNldCxzZWxlY3QsY29tbWl0CgppbXBvcnQganNvbgoKCgppbXBvcnQgdWlfZ2xvYmFsCgoKCmRlZiBzYW1wbGUxX29uX2NyZWF0ZShoYXNoTWFwLCBfZmlsZXM9Tm9uZSwgX2RhdGE9Tm9uZSk6CiAgICBpZiBub3QgaGFzaE1hcC5jb250YWluc0tleSgnYScpOgogICAgICAgIGhhc2hNYXAucHV0KCdhJywgJycpCiAgICBpZiBub3QgaGFzaE1hcC5jb250YWluc0tleSgnYicpOgogICAgICAgIGhhc2hNYXAucHV0KCdiJywgJycpCiAgICByZXR1cm4gaGFzaE1hcAoKCmRlZiBfc2FtcGxlMV9vbl9pbnB1dChoYXNoTWFwLCBfZmlsZXM9Tm9uZSwgX2RhdGE9Tm9uZSk6CiAgICBpZiBoYXNoTWFwLmdldCgnbGlzdGVuZXInKSA9PSAnYnRuX3Jlcyc6CiAgICAgICAgc3VtID0gaW50KGhhc2hNYXAuZ2V0KCdhJykpICsgaW50KGhhc2hNYXAuZ2V0KCdiJykpCiAgICAgICAgaGFzaE1hcC5wdXQoJ3RvYXN0Jywgc3RyKGludChoYXNoTWFwLmdldCgnYScpKSArIGludChoYXNoTWFwLmdldCgnYicpKSkpCiAgICByZXR1cm4gaGFzaE1hcAoKCmRlZiBpbml0X29uX3N0YXJ0KGhhc2hNYXAsIF9maWxlcz1Ob25lLCBfZGF0YT1Ob25lKToKICAgIHVpX2dsb2JhbC5pbml0KCkKICAgIHJldHVybiBoYXNoTWFwCgoKZGVmIGJhcmNvZGVfb25fc3RhcnQoaGFzaE1hcCwgX2ZpbGVzPU5vbmUsIF9kYXRhPU5vbmUpOgogICAgdGFibGUgPSB7CiAgICAgICAgJ3R5cGUnOiAndGFibGUnLAogICAgICAgICd0ZXh0c2l6ZSc6ICcyMCcsCgogICAgICAgICdjb2x1bW5zJzogWwogICAgICAgICAgICB7CiAgICAgICAgICAgICAgICAnbmFtZSc6ICdiYXJjb2RlJywKICAgICAgICAgICAgICAgICdoZWFkZXInOiAnQmFyY29kZScsCiAgICAgICAgICAgICAgICAnd2VpZ2h0JzogJzInCiAgICAgICAgICAgIH0sCiAgICAgICAgICAgIHsKICAgICAgICAgICAgICAgICduYW1lJzogJ25hbWUnLAogICAgICAgICAgICAgICAgJ2hlYWRlcic6ICdOYW1lJywKICAgICAgICAgICAgICAgICd3ZWlnaHQnOiAnMicKICAgICAgICAgICAgfSwKICAgICAgICAgICAgewogICAgICAgICAgICAgICAgJ25hbWUnOiAncXR5JywKICAgICAgICAgICAgICAgICdoZWFkZXInOiAnUXR5LicsCiAgICAgICAgICAgICAgICAnd2VpZ2h0JzogJzEnCiAgICAgICAgICAgIH0KICAgICAgICBdCiAgICB9CiAgICAjIHdvcmsgd2l0aCBTUUwgdmlhIFBvbnkgT1JNCiAgICBxdWVyeSA9IHNlbGVjdChjIGZvciBjIGluIHVpX2dsb2JhbC5SZWNvcmQpI2h0dHBzOi8vc3RhY2tvdmVyZmxvdy5jb20vcXVlc3Rpb25zLzE2MTE1NzEzL2hvdy1wb255LW9ybS1kb2VzLWl0cy10cmlja3MKICAgIHJvd3MgPSBbXQogICAgZm9yIHJlY29yZCBpbiBxdWVyeToKICAgICAgICByb3dzLmFwcGVuZCh7J2JhcmNvZGUnOiByZWNvcmQuYmFyY29kZSwgJ25hbWUnOiByZWNvcmQubmFtZSwgJ3F0eSc6IHJlY29yZC5xdHl9KQoKICAgIHRhYmxlWydyb3dzJ10gPSByb3dzCiAgICBoYXNoTWFwLnB1dCgndGFibGUnLCBqc29uLmR1bXBzKHRhYmxlKSkKCiAgICByZXR1cm4gaGFzaE1hcAoKCmRlZiBiYXJjb2RlX29uX2lucHV0KGhhc2hNYXAsIF9maWxlcz1Ob25lLCBfZGF0YT1Ob25lKToKCiAgICBpZiBoYXNoTWFwLmdldCgnbGlzdGVuZXInKSA9PSAnYmFyY29kZV9pbnB1dCc6CiAgICAgICAgaGFzaE1hcC5nZXQoJ2JhcmNvZGVfaW5wdXQnKQogICAgICAgIGhhc2hNYXAucHV0KCdTaG93U2NyZWVuJywgJ0lucHV0LXF0eScpCgogICAgcmV0dXJuIGhhc2hNYXAKCgpkZWYgX2lucHV0X3F0eShoYXNoTWFwLCBfZmlsZXM9Tm9uZSwgX2RhdGE9Tm9uZSk6CiAgICB3aXRoIGRiX3Nlc3Npb246CiAgICAgICAgcCA9IHVpX2dsb2JhbC5SZWNvcmQoYmFyY29kZT1oYXNoTWFwLmdldCgnYmFyY29kZScpLCBuYW1lPWhhc2hNYXAuZ2V0KCdub20nKSwgcXR5PWludChoYXNoTWFwLmdldCgncXR5JykpKQogICAgICAgIGNvbW1pdCgpCgogICAgaGFzaE1hcC5wdXQoJ1Nob3dTY3JlZW4nLCAnSW5wdXQtcXR5JykKICAgIGhhc2hNYXAucHV0KCd0b2FzdCcsICfQlNC+0LHQsNCy0LvQtdC90L4nKQogICAgcmV0dXJuIGhhc2hNYXAKCgo=",
+        "PyTimerTask": [
+            {
+                "PyTimerTaskKey": "on_start",
+                "PyTimerTaskDef": "init_on_start",
+                "PyTimerTaskPeriod": "-1",
+                "PyTimerTaskBuilIn": false
+            }
+        ],
+        "PyFiles": [
+            {
+                "PyFileKey": "ui_global",
+                "PyFileData": "ZnJvbSBwb255IGltcG9ydCBvcm0KZnJvbSBwb255Lm9ybSBpbXBvcnQgRGF0YWJhc2UsUmVxdWlyZWQsU2V0LEpzb24sUHJpbWFyeUtleSxPcHRpb25hbApmcm9tIHBvbnkub3JtLmNvcmUgaW1wb3J0IGRiX3Nlc3Npb24KaW1wb3J0IGRhdGV0aW1lCmltcG9ydCBzcWxpdGUzCmZyb20gdHlwaW5nIGltcG9ydCBPcHRpb25hbAoKCiMgQ29uc3RhbnRzIGFuZCB2YXJpYWJsZXMKREJfUEFUSCA9Jy8vZGF0YS9kYXRhL3J1LnRyYXZlbGZvb2Quc2ltcGxlX3VpL2RhdGFiYXNlcy9TaW1wbGVXTVMnICMgJ2RiLmRiJyMnZGJcXGRiLmRiJwojREJfUEFUSCA9ICdzcWxpdGVfZGV2LmRiJwpkYiA9IERhdGFiYXNlKCkKZGIuYmluZChwcm92aWRlcj0nc3FsaXRlJywgZmlsZW5hbWU9REJfUEFUSCwgY3JlYXRlX2RiPVRydWUpCgoKY2xhc3MgUmVjb3JkKGRiLkVudGl0eSk6CiAgICBiYXJjb2RlID0gUmVxdWlyZWQoc3RyKQogICAgbmFtZSA9IFJlcXVpcmVkKHN0cikKICAgIHF0eSA9IFJlcXVpcmVkKGludCkKCmRlZiBpbml0KCk6CiAgICBkYi5nZW5lcmF0ZV9tYXBwaW5nKGNyZWF0ZV90YWJsZXM9VHJ1ZSkKCmRlZiBzZXR1cF9kYihoYXNoX21hcDogT3B0aW9uYWxbJ2hhc2hNYXAnXSA9IE5vbmUsCiAgICAgICAgICAgICBkYl9wYXRoOiBzdHIgPSBEQl9QQVRILAogICAgICAgICAgICAgZGF0YWJhc2U6IERhdGFiYXNlID0gZGIKICAgICAgICAgICAgICkgLT4gTm9uZToKICAgICcnJwogICAgQ3JlYXRlcyB0aGUgZGF0YWJhc2Ugd2l0aCByZXF1aXJlZCB0YWJsZXMKICAgICcnJwoKICAgIGlmIGhhc2hfbWFwOgogICAgICAgIGRiX3BhdGggPSBoYXNoX21hcC5nZXQoJ0RCX1BBVEgnKQoKICAgIGRiLmJpbmQocHJvdmlkZXI9J3NxbGl0ZScsIGZpbGVuYW1lPWRiX3BhdGgsIGNyZWF0ZV9kYj1UcnVlKQogICAgZGIuZ2VuZXJhdGVfbWFwcGluZyhjcmVhdGVfdGFibGVzPVRydWUpCiMKIwojIGRlZiBhZGRfdGFibGVfZW50cmllcyhkYXRhOiBkaWN0KSAtPiBOb25lOgojICAgICAnJycKIyAgICAgRmlsbHMgdGhlIGRhdGFiYXNlIHRhYmxlcyB3aXRoIHNvbWUgZGF0YQojICAgICAnJycKIwojICAgICBmb3IgdGFibGUsIHJlY29yZHMgaW4gZGF0YS5pdGVtcygpOgojCiMgICAgICAgICBmb3IgcmVjb3JkX2RhdGEgaW4gcmVjb3JkczoKIyAgICAgICAgICAgICBvYmogPSB0YWJsZS5nZXQobmFtZT1yZWNvcmRfZGF0YS5nZXQoJ25hbWUnKSkKIwojICAgICAgICAgICAgIGlmIG9iajoKIyAgICAgICAgICAgICAgICAgb2JqLnNldCgqKnJlY29yZF9kYXRhKQojICAgICAgICAgICAgIGVsc2U6CiMgICAgICAgICAgICAgICAgIHRhYmxlKCoqcmVjb3JkX2RhdGEpCgo="
+            }
+        ]
+    }
+}
