@@ -114,7 +114,7 @@
                                         "height": "wrap_content",
                                         "width": "wrap_content",
                                         "weight": "0",
-                                        "Value": "about income",
+                                        "Value": "about buy",
                                         "Variable": ""
                                     },
                                     {
@@ -131,7 +131,7 @@
                                         "width": "wrap_content",
                                         "weight": "0",
                                         "Value": "Add Product",
-                                        "Variable": "btn_add_buy_product"
+                                        "Variable": "btn_add_product_buy"
                                     },
                                     {
                                         "type": "Button",
@@ -139,7 +139,7 @@
                                         "width": "wrap_content",
                                         "weight": "0",
                                         "Value": "Фото",
-                                        "Variable": "btn_add_buy_photo"
+                                        "Variable": "btn_add_photo_buy"
                                     }
                                 ],
                                 "BackgroundColor": "",
@@ -160,7 +160,7 @@
                         "onlineOnAfterStart": false
                     },
                     {
-                        "Name": "List_buy_product",
+                        "Name": "List_product_buy",
                         "type": "Operation",
                         "Elements": [
                             {
@@ -177,7 +177,7 @@
                                         "height": "wrap_content",
                                         "width": "wrap_content",
                                         "weight": "0",
-                                        "Value": "List buy products",
+                                        "Value": "List products buy",
                                         "Variable": ""
                                     },
                                     {
@@ -185,8 +185,8 @@
                                         "height": "wrap_content",
                                         "width": "wrap_content",
                                         "weight": "0",
-                                        "Value": "@tab_buy_product",
-                                        "Variable": "tab_buy_product_click"
+                                        "Value": "@tab_product_buy",
+                                        "Variable": "tab_product_click_buy"
                                     },
                                     {
                                         "type": "TextView",
@@ -201,8 +201,8 @@
                                         "height": "wrap_content",
                                         "width": "wrap_content",
                                         "weight": "0",
-                                        "Value": "New Buy Product",
-                                        "Variable": "btn_new_buy_product"
+                                        "Value": "New Product Buy",
+                                        "Variable": "btn_new_product_buy"
                                     }
                                 ],
                                 "BackgroundColor": "",
@@ -223,7 +223,7 @@
                         "onlineOnAfterStart": false
                     },
                     {
-                        "Name": "Input_buy_qty",
+                        "Name": "Input_qty_buy",
                         "type": "Operation",
                         "Elements": [
                             {
@@ -248,8 +248,8 @@
                                         "height": "wrap_content",
                                         "width": "wrap_content",
                                         "weight": "0",
-                                        "Value": "@name_buy_product",
-                                        "Variable": "name_buy_product"
+                                        "Value": "@name_product_buy",
+                                        "Variable": "name_product_buy"
                                     },
                                     {
                                         "type": "TextView",
@@ -264,8 +264,8 @@
                                         "height": "wrap_content",
                                         "width": "wrap_content",
                                         "weight": "0",
-                                        "Value": "@partnumber_buy_product",
-                                        "Variable": "partnumber_buy_product"
+                                        "Value": "@partnumber_product_buy",
+                                        "Variable": "partnumber_product_buy"
                                     },
                                     {
                                         "type": "TextView",
@@ -280,8 +280,8 @@
                                         "height": "wrap_content",
                                         "width": "wrap_content",
                                         "weight": "0",
-                                        "Value": "@measure_buy_product",
-                                        "Variable": "measure_buy_product"
+                                        "Value": "@measure_product_buy",
+                                        "Variable": "measure_product_buy"
                                     },
                                     {
                                         "type": "TextView",
@@ -296,8 +296,8 @@
                                         "height": "wrap_content",
                                         "width": "wrap_content",
                                         "weight": "0",
-                                        "Value": "@tags_buy_product",
-                                        "Variable": "tags_buy_product"
+                                        "Value": "@tags_product_buy",
+                                        "Variable": "tags_product_buy"
                                     },
                                     {
                                         "type": "TextView",
@@ -312,8 +312,8 @@
                                         "height": "wrap_content",
                                         "width": "wrap_content",
                                         "weight": "0",
-                                        "Value": "@qty_buy_product",
-                                        "Variable": "qty_buy_product"
+                                        "Value": "@qty_product_buy",
+                                        "Variable": "qty_product_buy"
                                     },
                                     {
                                         "type": "Button",
@@ -321,7 +321,7 @@
                                         "width": "wrap_content",
                                         "weight": "0",
                                         "Value": "Ok",
-                                        "Variable": "btn_buy_qty"
+                                        "Variable": "btn_qty_buy"
                                     }
                                 ],
                                 "BackgroundColor": "",
@@ -342,7 +342,7 @@
                         "onlineOnAfterStart": false
                     },
                     {
-                        "Name": "Input_update_buy_qty",
+                        "Name": "Input_new_qty_buy",
                         "type": "Operation",
                         "Elements": [
                             {
@@ -367,8 +367,8 @@
                                         "height": "wrap_content",
                                         "width": "wrap_content",
                                         "weight": "0",
-                                        "Value": "@name_buy_product",
-                                        "Variable": "name_buy_product"
+                                        "Value": "@new_name_product_buy",
+                                        "Variable": "new_name_product_buy"
                                     },
                                     {
                                         "type": "TextView",
@@ -383,8 +383,8 @@
                                         "height": "wrap_content",
                                         "width": "wrap_content",
                                         "weight": "0",
-                                        "Value": "@partnumber_buy_product",
-                                        "Variable": "partnumber_buy_product"
+                                        "Value": "@new_partnumber_product_buy ",
+                                        "Variable": "new_partnumber_product_buy "
                                     },
                                     {
                                         "type": "TextView",
@@ -399,8 +399,8 @@
                                         "height": "wrap_content",
                                         "width": "wrap_content",
                                         "weight": "0",
-                                        "Value": "@measure_buy_product",
-                                        "Variable": "measure_buy_product"
+                                        "Value": "@new_measure_product_buy",
+                                        "Variable": "new_measure_product_buy"
                                     },
                                     {
                                         "type": "TextView",
@@ -415,8 +415,8 @@
                                         "height": "wrap_content",
                                         "width": "wrap_content",
                                         "weight": "0",
-                                        "Value": "@tags_buy_product",
-                                        "Variable": "tags_buy_product"
+                                        "Value": "@new_tags_product_buy",
+                                        "Variable": "new_tags_product_buy"
                                     },
                                     {
                                         "type": "TextView",
@@ -431,8 +431,8 @@
                                         "height": "wrap_content",
                                         "width": "wrap_content",
                                         "weight": "0",
-                                        "Value": "@qty_buy_product",
-                                        "Variable": "qty_buy_product"
+                                        "Value": "@new_qty_product_buy",
+                                        "Variable": "new_qty_product_buy"
                                     },
                                     {
                                         "type": "Button",
@@ -440,7 +440,7 @@
                                         "width": "wrap_content",
                                         "weight": "0",
                                         "Value": "Ok",
-                                        "Variable": "btn_buy_qty"
+                                        "Variable": "btn_qty_buy"
                                     }
                                 ],
                                 "BackgroundColor": "",
@@ -455,8 +455,8 @@
                         "hideBottomBarScreen": false,
                         "onlineOnStart": false,
                         "onlineOnInput": false,
-                        "DefOnCreate": "_listinput_qty_buy_on_start",
-                        "DefOnInput": "_listinput_qty_buy_on_input",
+                        "DefOnCreate": "_listinput_new_qty_buy_on_start",
+                        "DefOnInput": "_listinput_new_qty_buy_on_input",
                         "send_when_opened": true,
                         "onlineOnAfterStart": false
                     }
