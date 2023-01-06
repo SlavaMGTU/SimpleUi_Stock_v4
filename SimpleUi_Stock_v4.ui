@@ -98,15 +98,15 @@
                                         "height": "wrap_content",
                                         "width": "wrap_content",
                                         "weight": "0",
-                                        "Value": "@number_buy",
-                                        "Variable": "number_buy"
+                                        "Value": "@number_list_buy",
+                                        "Variable": "number_list_buy"
                                     },
                                     {
                                         "type": "TableLayout",
                                         "height": "wrap_content",
                                         "width": "wrap_content",
                                         "weight": "0",
-                                        "Value": "@tab_buy",
+                                        "Value": "@tab_buy1",
                                         "Variable": "tab_buy_click"
                                     },
                                     {
@@ -440,7 +440,7 @@
                                         "width": "wrap_content",
                                         "weight": "0",
                                         "Value": "Ok",
-                                        "Variable": "btn_qty_buy"
+                                        "Variable": "btn_new_qty_buy"
                                     }
                                 ],
                                 "BackgroundColor": "",
@@ -554,8 +554,8 @@
                                         "height": "wrap_content",
                                         "width": "wrap_content",
                                         "weight": "0",
-                                        "Value": "@number_income",
-                                        "Variable": "number_income"
+                                        "Value": "@number_list_income",
+                                        "Variable": "number_list_income"
                                     },
                                     {
                                         "type": "TableLayout",
@@ -910,7 +910,66 @@
             {
                 "ProcessName": "Отчет о поступлениях",
                 "type": "Process",
-                "Operations": []
+                "Operations": [
+                    {
+                        "Name": "List_product_all",
+                        "type": "Operation",
+                        "Elements": [
+                            {
+                                "Value": "",
+                                "Variable": "",
+                                "type": "LinearLayout",
+                                "weight": "0",
+                                "height": "match_parent",
+                                "width": "match_parent",
+                                "orientation": "vertical",
+                                "Elements": [
+                                    {
+                                        "type": "TextView",
+                                        "height": "wrap_content",
+                                        "width": "wrap_content",
+                                        "weight": "0",
+                                        "Value": "Отчет",
+                                        "Variable": "",
+                                        "TextSize": "1",
+                                        "TextBold": false,
+                                        "TextItalic": false
+                                    },
+                                    {
+                                        "type": "TableLayout",
+                                        "height": "wrap_content",
+                                        "width": "wrap_content",
+                                        "weight": "0",
+                                        "Value": "@tab_all_product",
+                                        "Variable": "tab_all_product_click"
+                                    },
+                                    {
+                                        "type": "TextView",
+                                        "height": "wrap_content",
+                                        "width": "wrap_content",
+                                        "weight": "0",
+                                        "Value": "about income",
+                                        "Variable": ""
+                                    }
+                                ],
+                                "BackgroundColor": "",
+                                "StrokeWidth": "",
+                                "Padding": ""
+                            }
+                        ],
+                        "Timer": false,
+                        "hideToolBarScreen": false,
+                        "noScroll": false,
+                        "handleKeyUp": false,
+                        "hideBottomBarScreen": false,
+                        "onlineOnStart": false,
+                        "onlineOnInput": false,
+                        "DefOnCreate": "_listproduct_all_on_start",
+                        "DefOnInput": "_listproduct_all_on_input",
+                        "send_when_opened": true,
+                        "onlineOnAfterStart": false
+                    }
+                ]
             },
             {
                 "ProcessName": "Products",
@@ -961,7 +1020,10 @@
                                         "Value": "New",
                                         "Variable": "btn_newproduct"
                                     }
-                                ]
+                                ],
+                                "BackgroundColor": "",
+                                "StrokeWidth": "",
+                                "Padding": ""
                             }
                         ],
                         "Timer": false,

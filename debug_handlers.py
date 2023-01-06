@@ -57,14 +57,12 @@ class Buy(db.Entity):
 
 class List_buy(db.Entity):
     id = PrimaryKey(int, auto=True)
-    buys = Set(Buy,
-               cascade_delete=True)  # NotImplementedError:', column='list_buys' Parameter 'column' is not allowed for many-to-one attribute List_buy.buys
+    buys = Set(Buy, cascade_delete=True)  # NotImplementedError:', column='list_buys' Parameter 'column' is not allowed for many-to-one attribute List_buy.buys
 
 
 class List_income(db.Entity):
     id = PrimaryKey(int, auto=True)
-    incomes = Set(Income,
-                  cascade_delete=True)  # NotImplementedError:', column='list_incomes' Parameter 'column' is not allowed for many-to-one attribute List_income.incomes
+    incomes = Set(Income, cascade_delete=True)  # NotImplementedError:', column='list_incomes' Parameter 'column' is not allowed for many-to-one attribute List_income.incomes
 
 
 class Const(db.Entity):
@@ -105,7 +103,6 @@ def _list_buy_on_start(hashMap, _files=None, _data=None):
     rows = []
     with db_session:  # new
 
-        number_list = select(s for s in List_buy).count()  # СЧИТАЕТ количество строк в БД
         query = select(c for c in List_buy)
         for list_buy in query:
             rows.append({'id': list_buy.id, 'name': 'Закупка'})
@@ -120,21 +117,21 @@ def _list_buy_on_input(hashMap, _files=None, _data=None):
     if hashMap.get('listener') == 'TableClick':  # 'tab_list_buy_click'
         selected_line = json.loads(hashMap.d.get('selected_line'))
         hashMap.put('number_list_buy', str(selected_line['id']))  # counted the number of rows in the List_income
-        hashMap.put('ShowScreen', 'New_income')
+        hashMap.put('ShowScreen', 'New_buy')
 
     if hashMap.get('listener') == 'btn_new_buy':
 
         with db_session:  # search for the maximum "id" in List_buy
-            number_buy = 0
+            number_list_buy = 0 #!!! ERrOR - !!!пуст продукты с кол-м пунктов закупок где-то тут создается толпа пустых продуктов
             query = select(c for c in List_buy)
             for list_buy in query:
-                if list_buy.id > number_buy:
-                    number_buy = list_buy.id  # id строки в БД
-            number_buy += 1
+                if list_buy.id > number_list_buy:
+                    number_list_buy = list_buy.id  # id строки в БД
+            number_list_buy += 1
         with db_session:
-            l = List_buy(id=number_buy)  # create NEW List_buy
+            l = List_buy(id=number_list_buy)  # create NEW List_buy
             commit()
-        hashMap.put('number_list_buy', str(number_buy))  # counted the number of rows in the List_buy
+        hashMap.put('number_list_buy', str(number_list_buy))  # counted the number of rows in the List_buy
         hashMap.put('toast', 'добавлен НОВЫЙ список закупок')
         hashMap.put('ShowScreen', 'New_buy')
 
@@ -168,12 +165,11 @@ def _new_buy_on_start(hashMap, _files=None, _data=None):
     rows = []
 
     with db_session:  # new table !!! ERrOR - !!! где-то тут создается толпа пустых продуктов
-        number_buy = int(
-            json.loads(hashMap.d.get('number_list_buy')))  # counted the number of rows in the List_buy
-        l = List_buy[number_buy]
+        number_list_buy = json.loads(hashMap.d.get('number_list_buy'))  # counted the number of rows in the List_buy
+        l = List_buy[number_list_buy]
         buys = l.buys
         query = select(c for c in buys)
-        if hasattr(query, '__iter__'):
+        if hasattr(query, '__iter__'):# ERROR!!!! тут их генерят - пустые строки товара
             for buy in query:
                 try:
                     name = buy.products.Name
@@ -182,7 +178,8 @@ def _new_buy_on_start(hashMap, _files=None, _data=None):
                 else:
                     rows.append({'id': buy.id, 'name': name, 'qty_buy': buy.qty_buy})
     table['rows'] = rows
-    hashMap.put('tab_buy', json.dumps(table))
+    hashMap.put('number_list_buy', str(number_list_buy))
+    hashMap.put('tab_buy1', json.dumps(table))# таблица в конфу не передается ERROR!!!!!!!
 
     return hashMap
 
@@ -191,8 +188,8 @@ def _new_buy_on_input(hashMap, _files=None, _data=None):
     if hashMap.get('listener') == 'btn_del_buy':
         with db_session:
             selected_line = json.loads(hashMap.d.get('selected_line'))
-            number_buy = selected_line['id']
-            List_buy[number_buy].delete()  # del List_buy
+            number_list_buy = selected_line['id']
+            List_buy[number_list_buy].delete()  # del List_buy
             commit()
         hashMap.put('toast', 'удален список закупок')
         hashMap.put('ShowScreen', 'List_buy')
@@ -210,7 +207,7 @@ def _new_buy_on_input(hashMap, _files=None, _data=None):
         hashMap.put('toast', 'добавлена НОВая строчка товара')
         hashMap.put('ShowScreen', 'List_product_buy')
 
-    if hashMap.get('listener') == 'TableClick':  # tab_buy_click
+    if hashMap.get('listener') == 'TableClick':  # tab_buy1_click
         selected_line = json.loads(hashMap.d.get('selected_line'))
         hashMap.put('number_buy', str(selected_line['id']))  # the number of rows in the Buy
         hashMap.put('toast', 'Отредактируйте количество товара')
@@ -239,8 +236,10 @@ def _add_product_buy_on_start(hashMap, _files=None, _data=None):
     }
     rows = []
     number_buy = json.loads(hashMap.d.get('number_list_buy'))
-    with db_session:  # new
+    with db_session:  # new #  !!! ERrOR - !!! где-то тут создается толпа пустых продуктов
         query = select(c for c in Product)
+        # for product in query:
+        #     rows.append({'id': product.id, 'name': product.Name})
         l = List_buy[number_buy]
         buys = l.buys
         query1 = select(s for s in buys)
@@ -276,7 +275,7 @@ def _add_product_buy_on_input(hashMap, _files=None, _data=None):
 def _listinput_qty_buy_on_start(hashMap, _files=None, _data=None):
     selected_line = json.loads(hashMap.d.get('selected_line'))
     name_product = selected_line['name']
-    hashMap.put('name_product', str(name_product))
+    hashMap.put('name_product_buy', str(name_product))
 
     return hashMap
 
@@ -291,7 +290,7 @@ def _listinput_qty_buy_on_input(hashMap, _files=None, _data=None):
 
     hashMap.remove('selected_line')  # удаление строки для того чтоб не смещалось значения с Product на List_buy
     hashMap.put('ShowScreen', 'New_buy')
-    hashMap.put('toast', 'изменение кол-ва товара в списке поступления')
+    hashMap.put('toast', 'изменение кол-ва товара в списке закупок')
 
     return hashMap
 
@@ -321,7 +320,7 @@ def _listinput_new_qty_buy_on_input(hashMap, _files=None, _data=None):
 
     hashMap.remove('selected_line')  # удаление строки для того чтоб не смещалось значения с Product на List_income
     hashMap.put('ShowScreen', 'New_buy')
-    hashMap.put('toast', 'добавлено кол-во товара в список закупок')
+    hashMap.put('toast', 'добавлена позиция товара в список закупок')
 
     return hashMap
 
@@ -413,8 +412,7 @@ def _new_income_on_start(hashMap, _files=None, _data=None):
     rows = []
 
     with db_session:  # new table
-        number_income = int(
-            json.loads(hashMap.d.get('number_list_income')))  # counted the number of rows in the List_income
+        number_income = json.loads(hashMap.d.get('number_list_income'))  # counted the number of rows in the List_income
         l = List_income[number_income]
         incomes = l.incomes
         query = select(c for c in incomes)
@@ -427,6 +425,7 @@ def _new_income_on_start(hashMap, _files=None, _data=None):
                 else:
                     rows.append({'id': income.id, 'name': name, 'qty_income': income.qty_income})
     table['rows'] = rows
+    hashMap.put('number_list_income', str(number_income))
     hashMap.put('tab_income', json.dumps(table))
 
     return hashMap
@@ -570,6 +569,108 @@ def _listinput_new_qty_on_input(hashMap, _files=None, _data=None):
 
     return hashMap
 
+
+def _listproduct_all_on_start(hashMap, _files=None, _data=None):
+    table = {
+        'type': 'table',
+        'textsize': '20',
+
+        'columns': [
+            {
+                'name': 'id',
+                'header': 'ID',
+                'weight': '1'
+            },
+            {
+                'name': 'name',
+                'header': 'Name',
+                'weight': '2'
+            },
+            {
+                'name': 'qty_buy',
+                'header': 'Buy',
+                'weight': '1'
+            },
+            {
+                'name': 'qty_income',
+                'header': 'Inc',
+                'weight': '1'
+            },
+        ]
+    }
+
+    rows = []
+
+    # edit
+
+    with db_session:  # new table
+
+        query = select(c for c in Product)
+        for product in query:
+            id = product.id
+            sum_qty_income=0
+            sum_qty_buy=0
+            #query1 = select(s for s in product.incomes.qty_income)
+            for qty_buy in product.buys.qty_buy:
+                sum_qty_buy = sum_qty_buy + qty_buy
+            for qty_income in product.incomes.qty_income:
+                sum_qty_income = sum_qty_income + qty_income
+            rows.append({'id': product.id, 'name': product.Name, 'qty_income': sum_qty_income, 'qty_buy':sum_qty_buy})  # Name}) ,
+
+        # if hasattr(query, '__iter__'):
+        #     for product in query:
+        #         rows.append({'id': product.id, 'name': product.name, 'qty_income': product.qty_income})
+    table['rows'] = rows
+
+    hashMap.put('tab_all_product', json.dumps(table))
+
+    return hashMap
+
+
+def _new_income_on_input(hashMap, _files=None, _data=None):
+    if hashMap.get('listener') == 'btn_del_income':
+        with db_session:
+            selected_line = json.loads(hashMap.d.get('selected_line'))
+            number_income = selected_line['id']
+            List_income[number_income].delete()  # del List_income
+            commit()
+        hashMap.put('toast', 'удален список поступления')
+        hashMap.put('ShowScreen', 'List_income')
+
+    if hashMap.get('listener') == 'btn_add_product':
+        number_list = json.loads(hashMap.d.get('number_list_income'))  # get number from List_income
+        number_income = 0  # search for the maximum "id" in number_income
+        with db_session:
+            query = select(c for c in Income)
+            for income in query:
+                if income.id > number_income:
+                    number_income = income.id  # id строки в БД
+            number_income += 1
+        hashMap.put('number_income', str(number_income))  # counted the number of rows in the Income
+        hashMap.put('toast', 'добавлена НОВая строчка товара')
+        hashMap.put('ShowScreen', 'List_product')
+
+    if hashMap.get('listener') == 'TableClick':  # tab_income_click
+        selected_line = json.loads(hashMap.d.get('selected_line'))
+        hashMap.put('number_income', str(selected_line['id']))  # the number of rows in the Income
+        hashMap.put('toast', 'Отредактируйте количество товара')
+        hashMap.put('ShowScreen', 'Input_qty')
+
+    return hashMap
+
+
+
+
+#end edit
+
+
+
+
+
+
+
+
+
 #begin product
 
 def _listproduct_on_start(hashMap, _files=None, _data=None):
@@ -611,7 +712,7 @@ def _listproduct_on_input(hashMap, _files=None, _data=None):
 
 def _newproduct_on_start(hashMap, _files=None, _data=None):
     str_measure = 'kg;pcs;m;m3'  # не получается сделать всплывающий список
-    hashMap.put('str_measure', 'kg')
+    hashMap.put('str_measure', str_measure)# 'kg')
     return hashMap
 
 
