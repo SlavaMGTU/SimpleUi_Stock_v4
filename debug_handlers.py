@@ -29,7 +29,7 @@ class Product(db.Entity):
     Partnumber = Optional(str)
     Measure = Optional(str)
     tags = Set(Tag, column='products')
-    list_products = Set('List_product', column='products')
+    list_products = Set('List_product') #, column='products' - Parameter 'column' is not allowed for many-to-one attribute Product.list_products
     incomes = Set('Income', cascade_delete=False)
     buys = Set('Buy', cascade_delete=False)
 
@@ -38,7 +38,7 @@ class List_product(db.Entity):
     id = PrimaryKey(int, auto=True)
     qty_buy = Required(int, default=0)
     qty_income = Required(int, default=0)
-    products = Set(Product, column='list_products')
+    products = Required(Product)#, column='list_products' no such column: List_product.list_products
 
 
 class Income(db.Entity):
@@ -601,8 +601,6 @@ def _listproduct_all_on_start(hashMap, _files=None, _data=None):
 
     rows = []
 
-    # edit
-
     with db_session:  # new table
 
         query = select(c for c in Product)
@@ -658,19 +656,6 @@ def _new_income_on_input(hashMap, _files=None, _data=None):
 
     return hashMap
 
-
-
-
-#end edit
-
-
-
-
-
-
-
-
-
 #begin product
 
 def _listproduct_on_start(hashMap, _files=None, _data=None):
@@ -704,29 +689,159 @@ def _listproduct_on_start(hashMap, _files=None, _data=None):
 
 
 def _listproduct_on_input(hashMap, _files=None, _data=None):
+
+    if hashMap.get('listener') == 'TableClick':
+        selected_line = json.loads(hashMap.d.get('selected_line'))
+        hashMap.put('number_product', str(selected_line['id']))  # the number of rows in the Income
+        hashMap.put('toast', 'Отредактируйте товар')
+        hashMap.put('ShowScreen', 'Edit-product')
+
     if hashMap.get('listener') == 'btn_newproduct':
+        hashMap.put('toast', 'Добавьте товар')
         hashMap.put('ShowScreen', 'New-product')
 
     return hashMap
 
 
 def _newproduct_on_start(hashMap, _files=None, _data=None):
-    str_measure = 'kg;pcs;m;m3'  # не получается сделать всплывающий список
-    hashMap.put('str_measure', str_measure)# 'kg')
+    measure = hashMap.get('measure_product')
+    if measure == None: # условие позволяющее работать всплывающему списку
+        measure = 'kg;pcs;m;m3'
+        hashMap.put('measure_products', measure)# 'kg')
+        hashMap.put('measure_product', 'kg')
+    else:
+        measure = measure + ';kg;pcs;m;m3'# добавляю ед изм в начало строчки
+        hashMap.put('measure_products', measure)
+
+
     return hashMap
 
 
 def _newproduct_on_input(hashMap, _files=None, _data=None):
+    measure = hashMap.get('measure_product')
+    if hashMap.get('listener') == 'measure_products': #ОШИБКА!!! для повторного выбора единицы измерения необходимо выходить с экрана продукта и заходить туда заново
+        measure = hashMap.get('measure_products')
+        measures = measure + ';kg;pcs;m;m3'
+        hashMap.put('measure_product', str(measure))# ед. изм продукта
+        hashMap.put('measure_products', measures)#список ед. изм окна
+
     if hashMap.get('listener') == 'btn_save_newproduct':
+        tags = hashMap.get('tags_product')
+        tags_list = tags.split(',')
+        tags_set = set(tags_list)
         with db_session:
             # p = ui_global.Record(barcode=hashMap.get('barcode'), name=hashMap.get('nom'), qty=int(hashMap.get('qty')))
+            # create new Product
+           # measure = hashMap.get('measure_product')
             p = Product(Name=hashMap.get('name_product'),
-                        Measure=hashMap.get('str_measure'))  # Name=hashMap.get('name_product'),
+                        Partnumber=hashMap.get('partnumber_product'),
+                        Measure = hashMap.get('measure_product'))#hashMap.get(str(measure)))#measure)  # Name=hashMap.get('name_product'),
+
+        # create new Product Tags
+            #number_product = select(p.id for p in Product).max()# search for the maximum "id" in number_Product
+            # add all tags in to the table
+            for tag_name in tags_set: #  iterate over the values tags_set # search tags
+                query_tag = Tag.get(tag_name = tag_name)
+                if query_tag == None:
+                    t=Tag()
+                    t.tag_name = tag_name
+                    p.tags.add(t)
+                else:
+                    t=Tag[query_tag.id]#.products()
+                    p.tags.add(t)
             commit()
             hashMap.put('ShowScreen', 'List-product')
             hashMap.put('toast', 'Добавлен товар')
 
     return hashMap
+
+# Start EDIT
+
+def _editproduct_on_start(hashMap, _files=None, _data=None):
+
+    selected_line = json.loads(hashMap.d.get('selected_line'))
+    id_product = selected_line['id']
+    with db_session:
+        p = Product[id_product]
+        hashMap.put('name_product', str(p.Name))
+        hashMap.put('partnumber_product', str(p.Partnumber))
+        hashMap.put('measure_product', str(p.Measure))
+        #query = select(c for c in p.tags)
+        tags =''
+        for tag_name in p.tags.tag_name: #query:
+            tags = str(tag_name) +','+ tags
+        tags = tags[:-1]
+        hashMap.put('tags_product', str(tags))
+
+    measure = hashMap.get('measure_products')
+    if measure == None: # условие позволяющее работать всплывающему списку
+        measure = 'kg;pcs;m;m3'
+        hashMap.put('measure_products', measure)# 'kg')
+    else:
+        measure = measure + ';kg;pcs;m;m3'# добавляю ед изм в начало строчки
+        hashMap.put('measure_products', measure)
+
+    return hashMap
+
+def _editproduct_on_input(hashMap, _files=None, _data=None):
+    measure = hashMap.get('measure_product')
+    selected_line = json.loads(hashMap.d.get('selected_line'))
+    id_product = selected_line['id']
+    if hashMap.get('listener') == 'measure_products': #ОШИБКА!!! для повторного выбора единицы измерения необходимо выходить с экрана продукта и заходить туда заново
+        measure = hashMap.get('measure_products')
+        with db_session:
+            p = Product[id_product]
+            p.Measure = measure
+            commit()
+        measures = measure + ';kg;pcs;m;m3'
+        hashMap.put('measure_product', str(measure))# ед. изм продукта
+        hashMap.put('measure_products', measures)#список ед. изм окна
+
+    if hashMap.get('listener') == 'btn_save_editproduct':
+        tags = hashMap.get('tags_product')
+        tags_list = tags.split(',')
+        tags_set = set(tags_list)# create NEW tags_set {'tag1', 'tag2'}
+        with db_session:
+
+            # overwriting new data in Product
+            p = Product[id_product]
+            p.Name = hashMap.get('name_product')
+            p.Partnumber = hashMap.get('partnumber_product')
+            p.Measure = hashMap.get('measure_product')
+
+            # overwriting tags in Product
+            tag_old_names = select(t.tag_name for t in p.tags)[:]# create tag_old_set from Product
+            tags_old_set=set()
+            for tag_name in tag_old_names:
+                tags_old_set.add(tag_name)
+
+            diff_set = tags_old_set.difference(tags_set)# del not use old tag # Error -not check Entity “Tag” on tags without relationships with Entity “Product”
+            for tag_name in diff_set:
+                del_id=Tag.get(tag_name = tag_name).id
+                p.tags.remove(Tag[del_id])
+
+            new_set = tags_set.difference(tags_old_set)#create set with new tags or new Relationships with old tags
+            for tag_name in new_set: #  iterate over the values new_set # search tags
+                query_tag = Tag.get(tag_name = tag_name)
+                if query_tag == None:
+                    t=Tag()
+                    t.tag_name = tag_name
+                    p.tags.add(t)
+                else:
+                    t=Tag[query_tag.id]#.products()
+                    p.tags.add(t)
+            commit()
+            hashMap.put('ShowScreen', 'List-product')
+            hashMap.put('toast', 'Отредактирован товар')
+
+    return hashMap
+
+
+# Finish EDIT
+
+
+
+
 
 
 # -END CUSTOM HANDLERS

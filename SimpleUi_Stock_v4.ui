@@ -1061,6 +1061,14 @@
                                         "Variable": ""
                                     },
                                     {
+                                        "type": "TextView",
+                                        "height": "match_parent",
+                                        "width": "match_parent",
+                                        "weight": "0",
+                                        "Value": "Name",
+                                        "Variable": ""
+                                    },
+                                    {
                                         "type": "EditTextText",
                                         "height": "match_parent",
                                         "width": "match_parent",
@@ -1070,12 +1078,62 @@
                                         "gravity_horizontal": "center"
                                     },
                                     {
+                                        "type": "TextView",
+                                        "height": "match_parent",
+                                        "width": "match_parent",
+                                        "weight": "0",
+                                        "Value": "Partnumber",
+                                        "Variable": ""
+                                    },
+                                    {
+                                        "type": "EditTextText",
+                                        "height": "match_parent",
+                                        "width": "match_parent",
+                                        "weight": "0",
+                                        "Value": "@partnumber_product",
+                                        "Variable": "partnumber_product",
+                                        "gravity_horizontal": "center"
+                                    },
+                                    {
+                                        "type": "TextView",
+                                        "height": "match_parent",
+                                        "width": "match_parent",
+                                        "weight": "0",
+                                        "Value": "Measure",
+                                        "Variable": ""
+                                    },
+                                    {
+                                        "type": "TextView",
+                                        "height": "wrap_content",
+                                        "width": "wrap_content",
+                                        "weight": "0",
+                                        "Value": "@measure_product",
+                                        "Variable": "measure_product"
+                                    },
+                                    {
                                         "type": "SpinnerLayout",
                                         "height": "match_parent",
                                         "width": "match_parent",
                                         "weight": "0",
-                                        "Value": "@str_measure",
-                                        "Variable": "str_measure",
+                                        "Value": "@measure_products",
+                                        "Variable": "measure_products",
+                                        "gravity_horizontal": "center"
+                                    },
+                                    {
+                                        "type": "TextView",
+                                        "height": "match_parent",
+                                        "width": "match_parent",
+                                        "weight": "0",
+                                        "Value": "Tags. Введите метку через запятую",
+                                        "Variable": ""
+                                    },
+                                    {
+                                        "type": "EditTextText",
+                                        "height": "match_parent",
+                                        "width": "match_parent",
+                                        "weight": "0",
+                                        "Value": "@tags_product",
+                                        "Variable": "tags_product",
                                         "gravity_horizontal": "center"
                                     },
                                     {
@@ -1087,7 +1145,10 @@
                                         "Variable": "btn_save_newproduct",
                                         "gravity_horizontal": "center"
                                     }
-                                ]
+                                ],
+                                "BackgroundColor": "",
+                                "StrokeWidth": "",
+                                "Padding": ""
                             }
                         ],
                         "Timer": false,
@@ -1099,6 +1160,122 @@
                         "onlineOnInput": false,
                         "DefOnCreate": "_newproduct_on_start",
                         "DefOnInput": "_newproduct_on_input",
+                        "send_when_opened": true,
+                        "onlineOnAfterStart": false
+                    },
+                    {
+                        "Name": "Edit-product",
+                        "type": "Operation",
+                        "Elements": [
+                            {
+                                "Value": "",
+                                "Variable": "",
+                                "type": "LinearLayout",
+                                "weight": "0",
+                                "height": "match_parent",
+                                "width": "match_parent",
+                                "orientation": "vertical",
+                                "Elements": [
+                                    {
+                                        "type": "TextView",
+                                        "height": "match_parent",
+                                        "width": "match_parent",
+                                        "weight": "0",
+                                        "Value": "Edit Product",
+                                        "Variable": ""
+                                    },
+                                    {
+                                        "type": "TextView",
+                                        "height": "match_parent",
+                                        "width": "match_parent",
+                                        "weight": "0",
+                                        "Value": "Name",
+                                        "Variable": ""
+                                    },
+                                    {
+                                        "type": "EditTextText",
+                                        "height": "match_parent",
+                                        "width": "match_parent",
+                                        "weight": "0",
+                                        "Value": "@name_product",
+                                        "Variable": "name_product",
+                                        "gravity_horizontal": "center"
+                                    },
+                                    {
+                                        "type": "TextView",
+                                        "height": "match_parent",
+                                        "width": "match_parent",
+                                        "weight": "0",
+                                        "Value": "Partnumber",
+                                        "Variable": ""
+                                    },
+                                    {
+                                        "type": "EditTextText",
+                                        "height": "match_parent",
+                                        "width": "match_parent",
+                                        "weight": "0",
+                                        "Value": "@partnumber_product",
+                                        "Variable": "partnumber_product",
+                                        "gravity_horizontal": "center"
+                                    },
+                                    {
+                                        "type": "TextView",
+                                        "height": "match_parent",
+                                        "width": "match_parent",
+                                        "weight": "0",
+                                        "Value": "Measure",
+                                        "Variable": ""
+                                    },
+                                    {
+                                        "type": "SpinnerLayout",
+                                        "height": "match_parent",
+                                        "width": "match_parent",
+                                        "weight": "0",
+                                        "Value": "@measure_product",
+                                        "Variable": "measure_product",
+                                        "gravity_horizontal": "center"
+                                    },
+                                    {
+                                        "type": "TextView",
+                                        "height": "match_parent",
+                                        "width": "match_parent",
+                                        "weight": "0",
+                                        "Value": "Tags. Введите метку через запятую",
+                                        "Variable": ""
+                                    },
+                                    {
+                                        "type": "EditTextText",
+                                        "height": "match_parent",
+                                        "width": "match_parent",
+                                        "weight": "0",
+                                        "Value": "@tags_product",
+                                        "Variable": "tags_product",
+                                        "gravity_horizontal": "center"
+                                    },
+                                    {
+                                        "type": "Button",
+                                        "height": "match_parent",
+                                        "width": "match_parent",
+                                        "weight": "0",
+                                        "Value": "OK",
+                                        "Variable": "btn_save_editproduct",
+                                        "gravity_horizontal": "center"
+                                    }
+                                ],
+                                "BackgroundColor": "",
+                                "StrokeWidth": "",
+                                "Padding": ""
+                            }
+                        ],
+                        "Timer": false,
+                        "hideToolBarScreen": false,
+                        "noScroll": false,
+                        "handleKeyUp": false,
+                        "hideBottomBarScreen": false,
+                        "onlineOnStart": false,
+                        "onlineOnInput": false,
+                        "DefOnCreate": "_editproduct_on_start",
+                        "DefOnInput": "_editproduct_on_input",
                         "send_when_opened": true,
                         "onlineOnAfterStart": false
                     }
